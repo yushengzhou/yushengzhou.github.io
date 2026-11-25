@@ -10,8 +10,6 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
-  pages: write
-  id-token: write
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -22,6 +20,8 @@ jobs:
   check:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -31,10 +31,16 @@ jobs:
           lfs: false
       - name: Install Hugo
         run: |
+          set -euo pipefail
           echo "Installing Hugo ${HUGO_VERSION}..."
-          curl -sfL --output-dir "${{ runner.temp }}" -O "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz"
+          file="hugo_${HUGO_VERSION}_linux-amd64.tar.gz"
+          base="https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}"
+          curl -sfL --output-dir "${{ runner.temp }}" -O "${base}/${file}"
+          curl -sfL --output-dir "${{ runner.temp }}" -O "${base}/hugo_${HUGO_VERSION}_checksums.txt"
+          grep -F "${file}" "${{ runner.temp }}/hugo_${HUGO_VERSION}_checksums.txt"
+          (cd "${{ runner.temp }}" && sha256sum --check --ignore-missing "hugo_${HUGO_VERSION}_checksums.txt")
           mkdir -p "${HOME}/.local/hugo"
-          tar -C "${HOME}/.local/hugo" -xf "${{ runner.temp }}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz"
+          tar -C "${HOME}/.local/hugo" -xf "${{ runner.temp }}/${file}"
           echo "${HOME}/.local/hugo" >> "${GITHUB_PATH}"
       - name: Build
         run: hugo build --gc --minify --baseURL "https://yushengzhou.github.io/"
@@ -43,7 +49,7 @@ jobs:
           set -euo pipefail
           out=$(hugo --printI18nWarnings --gc --minify --baseURL "https://yushengzhou.github.io/" 2>&1)
           printf '%s\n' "$out"
-          if printf '%s\n' "$out" | grep -E -i 'i18n|missing translation'; then
+          if printf '%s\n' "$out" | grep -F 'i18n|MISSING_TRANSLATION'; then
             echo "i18n warnings present"
             exit 1
           fi
@@ -52,6 +58,10 @@ jobs:
   build:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -64,17 +74,23 @@ jobs:
         uses: actions/configure-pages@v6
       - name: Install Hugo
         run: |
+          set -euo pipefail
           echo "Installing Hugo ${HUGO_VERSION}..."
-          curl -sfL --output-dir "${{ runner.temp }}" -O "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz"
+          file="hugo_${HUGO_VERSION}_linux-amd64.tar.gz"
+          base="https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}"
+          curl -sfL --output-dir "${{ runner.temp }}" -O "${base}/${file}"
+          curl -sfL --output-dir "${{ runner.temp }}" -O "${base}/hugo_${HUGO_VERSION}_checksums.txt"
+          grep -F "${file}" "${{ runner.temp }}/hugo_${HUGO_VERSION}_checksums.txt"
+          (cd "${{ runner.temp }}" && sha256sum --check --ignore-missing "hugo_${HUGO_VERSION}_checksums.txt")
           mkdir -p "${HOME}/.local/hugo"
-          tar -C "${HOME}/.local/hugo" -xf "${{ runner.temp }}/hugo_${HUGO_VERSION}_linux-amd64.tar.gz"
+          tar -C "${HOME}/.local/hugo" -xf "${{ runner.temp }}/${file}"
           echo "${HOME}/.local/hugo" >> "${GITHUB_PATH}"
       - name: Build
         run: |
           set -euo pipefail
           out=$(hugo build --gc --minify --printI18nWarnings --baseURL "${{ steps.pages.outputs.base_url }}/" 2>&1)
           printf '%s\n' "$out"
-          if printf '%s\n' "$out" | grep -E -i 'i18n|missing translation'; then
+          if printf '%s\n' "$out" | grep -F 'i18n|MISSING_TRANSLATION'; then
             echo "i18n warnings present"
             exit 1
           fi
@@ -89,6 +105,9 @@ jobs:
     if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

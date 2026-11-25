@@ -300,6 +300,33 @@ def check_originality():
         fail("banned theme names found:\n" + "\n".join(hits))
 
 
+def check_hit_targets():
+    css = (ROOT / "assets/css/main.css").read_text(encoding="utf-8")
+    match = re.search(
+        r"\.nav a,\s*\.lang-switch,.*?\.download\s*\{([^}]+)\}",
+        css,
+        re.S,
+    )
+    if not match:
+        fail("hit-target CSS rule is missing")
+    body = match.group(1)
+    for prop in ("min-width", "min-height"):
+        found = re.search(rf"{prop}\s*:\s*(\d+)px", body)
+        if not found or int(found.group(1)) < 44:
+            fail(f"hit targets need {prop} of at least 44px")
+
+
+def check_alias():
+    path = PUBLIC / "en" / "index.html"
+    if not path.is_file():
+        fail("missing /en/ redirect page")
+    text = path.read_text(encoding="utf-8", errors="replace").lower()
+    if "noindex" not in text:
+        fail("/en/ redirect is missing robots noindex")
+    if "refresh" not in text:
+        fail("/en/ redirect is missing the meta refresh")
+
+
 def check_private():
     pat = re.compile(
         base64.b64decode("Z2VudHJpZmljYXRpb24=").decode(),
@@ -363,6 +390,8 @@ def main():
         fail("projects page rendered publications")
     check_placeholders(pages)
     check_cv(html_paths)
+    check_hit_targets()
+    check_alias()
     check_originality()
     check_private()
     print("ok")
