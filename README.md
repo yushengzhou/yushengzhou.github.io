@@ -49,7 +49,7 @@ The address on the home page is the `email` field in `data/profile.yaml`. The OR
 
 `data/publications.yaml` is the publication list. The intro lines are `content/publications.en.md` and `content/publications.zh.md`. To add a work, copy an entry, set `placeholder: false`, and keep this field order: `id`, `placeholder`, `type`, `year`, `month`, `selected`, then `authors`, `title`, `venue`, and `doi`. Optional `pdf`, `preprint`, and `code` render as links when set. Omit `title.zh` and `venue.zh` unless that Chinese string is the title of record. Newest `year`, then `month`, is listed first. `selected: true` also lists the work on the home page. The exact author string `Yusheng Zhou` is shown in bold. The site check expects 10 entries and at most 3 with `selected: true`.
 
-`data/experience.yaml` fields: `id`, `placeholder`, `role`, `org`, `place`, `when`, optional `summary`. `data/education.yaml` fields: `id`, `placeholder`, `degree`, `org`, `place`, `when`. `data/grants.yaml` is awarded grants only. Fields: `id`, `placeholder`, `when`, `role`, `title`, `funder`, `amount`. `amount` is one string for both languages. There is no awards list in this version.
+`data/experience.yaml` fields: `id`, `placeholder`, `country`, `role`, `org`, `place`, `when`, optional `summary`. `data/education.yaml` fields: `id`, `placeholder`, `country`, `degree`, `org`, `place`, `when`. `data/grants.yaml` is awarded grants only. Fields: `id`, `placeholder`, `when`, `role`, `title`, `funder`. There is no awards list in this version.
 
 `data/timeline.yaml` only points at those records. It does not copy titles, authors, or organizations. Each row has:
 
@@ -64,7 +64,7 @@ Use `type` and `from` as a pair: `education` with `education`, `position` with `
 
 To add a timeline entry, add the record to the source file if it is not there, then add one row here. The site check expects at least 21 rows.
 
-The home page, after the About prose, shows a timeline preview of `education` and `position` only, then awarded grants, then selected publications. That preview replaces the old Experience and Education blocks. The full page is `/timeline/` and `/zh/timeline/` and lists every row, including all 10 publications and the 4 awarded grants as milestones. Filter chips (All, Education, Position, Publication, Milestone) are on the full page only. They are buttons, and the page's script hides other types and sets `aria-pressed`. With JavaScript off, every item is in the page and none are hidden. Position summaries, publication authors, and grant role and amount sit in closed `details`.
+The home page, after the About prose, shows a timeline preview of `education` and `position` only, then awarded grants, then selected publications. That preview replaces the old Experience and Education blocks. The full page is `/timeline/` and `/zh/timeline/` and lists every row, including all 10 publications and the 4 awarded grants as milestones. Filter chips (All, Education, Position, Publication, Milestone) are on the full page only. They are buttons, and the page's script hides other types and sets `aria-pressed`. With JavaScript off, every item is in the page and none are hidden. Position summaries and publication authors sit in closed `details`.
 
 `content/projects/_index.en.md` and `content/projects/_index.zh.md` are the projects section. With no project pages, the page shows `No projects are listed yet.` and `尚未列出项目。`. Add `content/projects/<slug>.en.md` and `content/projects/<slug>.zh.md`. `archetypes/default.md` sets `draft: true`. A draft is omitted from `hugo server` and from `hugo --gc --minify`. Set `draft: false` to publish. If a page has no translation, the language toggle points at that language's home page.
 
@@ -104,3 +104,5 @@ In the repository on GitHub, open Settings, then Pages, then Build and deploymen
 ## License
 
 This repository has no `LICENSE` file. No license decision is on record.
+
+Flag SVGs from flag-icons v7.6.0 by Panayiotis Lipiridis, MIT licence, https://github.com/lipis/flag-icons
