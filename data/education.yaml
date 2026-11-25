@@ -1,5 +1,6 @@
 - id: mhh-phd
   placeholder: false
+  country: de
   degree:
     en: "Ph.D. Public Health"
     zh: "公共卫生博士"
@@ -14,6 +15,7 @@
     zh: "2016年12月–2021年10月"
 - id: uq-msc
   placeholder: false
+  country: au
   degree:
     en: "M.Sc. in Public Health"
     zh: "公共卫生理学硕士"
@@ -28,6 +30,7 @@
     zh: "2013年9月–2015年7月"
 - id: zcmu-bs
   placeholder: false
+  country: cn
   degree:
     en: "B.S. in Chinese Medicine"
     zh: "中医学学士"

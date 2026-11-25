@@ -43,3 +43,24 @@ Do not copy, translate, restyle, or re-implement from www.lizheng.ai (or its `/e
 Also still forbidden, from the parent spec: al-folio, academicpages / Minimal Mistakes, Hugo Blox / Wowchemy / Academic, Hugo Academia, and any other third-party academic theme.
 
 Timeline CSS and any filter script must be original work in this repository.
+
+# v2 references (borrowing record)
+
+Studied 2026-11-26, read-only. Ideas only. No source code is recorded here for reuse.
+
+## Borrowing record
+
+| Idea | Source | Licence | How the rewrite differs |
+| --- | --- | --- | --- |
+| A short About home, with the rest of the content on separate pages | https://github.com/academicpages/academicpages.github.io (default branch `master`, v0.9, 2026-06-24; file `README.md`, site https://academicpages.github.io/) | MIT, © 2016 Michael Rose | Hugo, original layouts. Home is hero + a short intro + research directions + four entry cards, not a sidebar-author page. No Markdown collections for talks, teaching, portfolio, or a blog. |
+| A top navigation bar linking separate section pages | Same repo, `_data/navigation.yml` | MIT | Five modules chosen for this site (About, Publications, Timeline / CV, Grants, Projects & Code), EN and ZH via i18n keys, current page marked with `aria-current`, wraps at 375px. No dropdowns and no masthead styling. |
+| A horizontal year axis with a location flag under the years, so a career reads as a map of places | An unnamed reference screenshot that is not in this repository (origin not identified) | Unknown (treated as all rights reserved) | The axis is 2008–2026 from the CV only. Education and work are continuous bars with one flag at the start of each bar. City text sits next to every flag. Details open on hover, focus, or tap. The track uses scroll-snap at 375px. Colours come from the existing CSS variables. The image is not committed and is not shown on the site. |
+| Country flag as a compact place marker | https://github.com/lipis/flag-icons (v7.6.0, 2026-10-15) | MIT, © 2013 Panayiotis Lipiridis | Five SVGs vendored unmodified into `static/flags/` with the licence file. No CSS or JS from that library. Flags use `alt=""` because the place text carries the meaning. |
+
+Flag SVGs from flag-icons v7.6.0 by Panayiotis Lipiridis, MIT licence, https://github.com/lipis/flag-icons
+
+## Must-not-copy
+
+From academicpages.github.io, and from the Minimal Mistakes lineage, do not copy layouts, SCSS, JavaScript, fonts, images, or the names "Academic Pages" and "Minimal Mistakes". Do not commit or embed the unnamed reference screenshot, and do not reuse its places, flags, years, or tick styling.
+
+Also still forbidden from v1: al-folio, Hugo Blox / Wowchemy / Academic, Hugo Academia, any third-party academic theme, and www.lizheng.ai.

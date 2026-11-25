@@ -49,7 +49,7 @@ From the CV text used for v1, and already encoded in the PR data files unless no
 
 - Positions: Aarhus University, Dept. of Public Health, Postdoctoral Researcher, Nov 2026 – Present; KITE / Toronto Rehab / UHN, Post-Doctoral Fellow, Oct 2025 – Oct 2026; RI-MUHC, Post-Doctoral Fellow, Jan 2023 – Oct 2025; Hannover Medical School, Graduate Researcher, 2021 – 2022 (no description in the CV; do not invent one).
 - Education: Ph.D. Public Health, Hannover Medical School, Dec 2016 – Oct 2021; M.Sc. Public Health, University of Queensland, Sep 2013 – Jul 2015; B.S. Chinese Medicine, Zhejiang Chinese Medicine University, Sep 2008 – Jul 2013.
-- Awarded grants (co-applicant only): four records already in `data/grants.yaml` (CIHR 2025–26 $306,000; NWHRI 2024–26 $150,000; CPHO Catalyst 2023–25 $125,000; CIHR 2021–23 $182,836).
+- Awarded grants (co-applicant only): four records already in `data/grants.yaml`.
 - Publications: 10 journal articles in `data/publications.yaml`, from public ORCID `0009-0003-6736-6496` (record last modified 2026-11-24 02:34 Europe/Copenhagen).
 
 From ORCID employments (cross-check only): Aarhus, UHN/Toronto Rehab, and McGill/MUHC agree in substance with the CV; education list is empty; no fundings.

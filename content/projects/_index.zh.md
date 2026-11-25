@@ -1,6 +1,6 @@
 ---
-title: "项目"
-description: "Yusheng Zhou 的项目。"
+title: "项目与代码"
+description: "Yusheng Zhou 的项目与代码。"
 ---
 
 研究软件与其他项目。
