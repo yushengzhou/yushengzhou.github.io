@@ -17,7 +17,7 @@ Add an original, accessible vertical timeline of real education, positions, publ
 
 ## Out of scope
 
-Teaching, presentations, professional memberships, peer review, **grants under review**, unsuccessful grants, referees, the phone number printed on the CV, a CV PDF, BibTeX, new NPM/Hugo-module dependencies, dark-mode or i18n rewrites, and any copy of lizheng.ai layout, CSS, JS, typography, assets, names, or branding. Do not invent Chinese publication titles (follow `docs/decisions.md` §4 and §8).
+Teaching, presentations, professional memberships, peer review, **grants under review**, unsuccessful grants, referees, the phone number printed on the CV, a CV PDF, BibTeX, new NPM/Hugo-module dependencies, dark-mode or i18n rewrites, and any copy of lizheng.ai layout, CSS, JS, typography, assets, names, or branding. Do not invent Chinese publication titles (follow [ADR-0004](decisions/ADR-0004-orcid-publications.md) and [ADR-0008](decisions/ADR-0008-english-institution-names.md)).
 
 ## Stack / approach
 
