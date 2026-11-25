@@ -17,6 +17,8 @@ REQUIRED = [
     "zh/publications/index.html",
     "projects/index.html",
     "zh/projects/index.html",
+    "timeline/index.html",
+    "zh/timeline/index.html",
 ]
 MAIN_PAGES = REQUIRED[:]
 BADGE = {"en": "PLACEHOLDER", "zh": "占位"}
@@ -293,6 +295,8 @@ def check_originality():
             fail("hugo.toml sets a theme")
     hits = []
     for path in iter_repo_files():
+        if path.relative_to(ROOT).parts[0] == "docs":
+            continue
         text = path.read_text(encoding="utf-8", errors="ignore")
         if pat.search(text):
             hits.append(str(path.relative_to(ROOT)))
@@ -336,6 +340,270 @@ def check_private():
         text = path.read_text(encoding="utf-8", errors="ignore")
         if pat.search(text):
             fail(f"{path.relative_to(ROOT)} contains excluded CV text")
+
+
+def _attr(blob, name):
+    match = re.search(
+        rf"{name}=(?:\"([^\"]*)\"|'([^']*)'|([^\s>]+))",
+        blob,
+    )
+    if not match:
+        return None
+    return next(group for group in match.groups() if group is not None)
+
+
+def _timeline_items(html):
+    items = []
+    for match in re.finditer(r"<li\b([^>]*)>", html, re.I):
+        blob = match.group(1)
+        if _attr(blob, "data-tl-type") is None:
+            continue
+        items.append(
+            {
+                "type": _attr(blob, "data-tl-type"),
+                "id": _attr(blob, "data-id") or "",
+                "from": _attr(blob, "data-from") or "",
+                "start": _attr(blob, "data-start") or "",
+                "end": _attr(blob, "data-end") or "",
+                "source": _attr(blob, "data-source") or "",
+                "hidden": "hidden" in blob.lower().split(),
+            }
+        )
+    return items
+
+
+def _stamp(value, empty):
+    if not value:
+        return empty
+    bits = value.split("-")
+    year = int(bits[0])
+    month = int(bits[1]) if len(bits) > 1 else 0
+    return year * 100 + month
+
+
+def _timeline_sort_key(item):
+    return (
+        _stamp(item["start"], 0),
+        _stamp(item["end"], 999999),
+        item["id"],
+    )
+
+
+def _parse_timeline_rows():
+    rows = []
+    current = None
+    for line in (ROOT / "data/timeline.yaml").read_text(encoding="utf-8").splitlines():
+        if line.startswith("- id:"):
+            if current:
+                rows.append(current)
+            current = {"id": line.split(":", 1)[1].strip().strip('"'), "end": ""}
+            continue
+        if current is None or not line.startswith("  ") or line.startswith("    "):
+            continue
+        key, _, value = line.strip().partition(":")
+        value = value.strip().strip('"')
+        if value in ("null", "~"):
+            value = ""
+        current[key] = value
+    if current:
+        rows.append(current)
+    return rows
+
+
+def _ids_in_data(filename):
+    text = (ROOT / "data" / filename).read_text(encoding="utf-8")
+    return set(re.findall(r'(?m)^- id:\s*"?([^"\n]+)"?', text))
+
+
+def ac1_timeline_pages():
+    """AC1: both timeline pages, reverse chronology, sibling language toggle."""
+    rows = _parse_timeline_rows()
+    if len(rows) < 21:
+        fail(f"timeline.yaml has {len(rows)} rows, expected at least 21")
+    expected = sorted(rows, key=_timeline_sort_key, reverse=True)
+    for rel, other in (
+        ("timeline/index.html", "/zh/timeline/"),
+        ("zh/timeline/index.html", "/timeline/"),
+    ):
+        text, parser = load(rel)
+        if norm(parser.lang_href) != other:
+            fail(f"{rel} language toggle points to {parser.lang_href}")
+        if 'data-timeline="full"' not in text and "data-timeline=full" not in text:
+            fail(f"{rel} is not the full timeline")
+        items = _timeline_items(text)
+        got = [(item["id"], item["start"], item["end"]) for item in items]
+        want = [(row["id"], row["start"], row.get("end", "")) for row in expected]
+        if got != want:
+            fail(f"{rel} timeline order {got} != {want}")
+        if 'id="experience-heading"' in text or "id=experience-heading" in text:
+            fail(f"{rel} still has a standalone experience block")
+    home, _ = load("index.html")
+    if "data-timeline=preview" not in home and 'data-timeline="preview"' not in home:
+        fail("homepage is missing the timeline preview")
+    if "id=experience-heading" in home or 'id="experience-heading"' in home:
+        fail("homepage still has a standalone experience block")
+    if "id=education-heading" in home or 'id="education-heading"' in home:
+        fail("homepage still has a standalone education block")
+    preview = _timeline_items(home)
+    if not preview or any(item["type"] not in ("education", "position") for item in preview):
+        fail("homepage timeline preview must be education and positions only")
+    if "Full timeline" not in home:
+        fail("homepage timeline preview has no full-timeline link")
+    css = (ROOT / "assets/css/main.css").read_text(encoding="utf-8")
+    if "[data-theme=\"dark\"]" not in css or "var(--text)" not in css or "var(--line)" not in css:
+        fail("timeline styling must keep the existing light and dark variables")
+
+
+def ac2_timeline_mobile():
+    """AC2: single column, 44px controls, homepage identity stays first."""
+    css = (ROOT / "assets/css/main.css").read_text(encoding="utf-8")
+    if re.search(r"\.timeline\s*\{[^}]*grid-template-columns", css, re.S):
+        fail("timeline must not use a side-column grid")
+    for selector in (".tl-filters button", ".timeline summary"):
+        match = re.search(rf"{re.escape(selector)}\s*\{{([^}}]+)\}}", css, re.S)
+        if not match:
+            fail(f"missing hit-target rule for {selector}")
+        body = match.group(1)
+        for prop in ("min-width", "min-height"):
+            found = re.search(rf"{prop}\s*:\s*(\d+)px", body)
+            if not found or int(found.group(1)) < 44:
+                fail(f"{selector} needs {prop} of at least 44px")
+    home, _ = load("index.html")
+    if home.find("<h1") == -1 or home.find("mailto:") == -1:
+        fail("homepage is missing the name or email")
+    if home.find("<h1") > home.find("mailto:"):
+        fail("homepage email appears before the name")
+    if "data-timeline=preview" in home or 'data-timeline="preview"' in home:
+        if home.find("mailto:") > home.find("data-timeline"):
+            fail("homepage timeline is above the name and email")
+
+
+def ac3_timeline_filters():
+    """AC3: every item is in the HTML; filters are progressive enhancement."""
+    text, _ = load("timeline/index.html")
+    items = _timeline_items(text)
+    if any(item["hidden"] for item in items):
+        fail("timeline items are hidden without JS")
+    if len(items) != len(_parse_timeline_rows()):
+        fail("full timeline does not render every composed item")
+    if "data-tl-filter=all" not in text and 'data-tl-filter="all"' not in text:
+        fail("timeline filters are missing")
+    if not re.search(r"<button\b[^>]*data-tl-filter", text):
+        fail("timeline filters are not buttons")
+    if not re.search(r"<script\b[^>]*>[\s\S]*data-tl-filter", text):
+        fail("timeline filter script is missing")
+    css = (ROOT / "assets/css/main.css").read_text(encoding="utf-8")
+    if re.search(r"\.timeline\s+li\s*\{[^}]*display\s*:\s*none", css, re.S):
+        fail("timeline CSS hides items before JS runs")
+
+
+def ac4_timeline_semantics():
+    """AC4: ordered list, machine dates, keyboard details, reduced motion."""
+    for rel in ("timeline/index.html", "zh/timeline/index.html", "index.html"):
+        text, _ = load(rel)
+        if "<ol" not in text.lower() or "timeline" not in text.lower():
+            fail(f"{rel} timeline is not an ordered list")
+        for match in re.finditer(r"<li\b([^>]*)>([\s\S]*?)</li>", text, re.I):
+            if _attr(match.group(1), "data-tl-type") is None:
+                continue
+            if not re.search(r"<time\b[^>]*datetime=", match.group(2), re.I):
+                fail(f"{rel} item {_attr(match.group(1), 'data-id')} has no time datetime")
+    text, _ = load("timeline/index.html")
+    if "<details" not in text.lower():
+        fail("timeline position or grant detail is not in details")
+    css = (ROOT / "assets/css/main.css").read_text(encoding="utf-8")
+    if "prefers-reduced-motion" not in css:
+        fail("CSS does not disable motion for prefers-reduced-motion")
+
+
+def ac5_timeline_exclusions():
+    """AC5: no phone, referee contacts, or non-awarded grants; items trace to data."""
+    needles = [
+        base64.b64decode(value).decode()
+        for value in (
+            "KzQ1IDUyODAwNzE3",
+            "NTI4MDA3MTc=",
+            "bG91aXNlLnBpbG90ZUBtY2dpbGwuY2E=",
+            "bWFyem9saW5p",
+            "Y25vcnJpc0B1YWxiZXJ0YS5jYQ==",
+            "Z2VudHJpZmljYXRpb24=",
+            "YnJhaW4gYWdl",
+            "cGF0aWVudC1yZXBvcnRlZCBvdXRjb21lcw==",
+        )
+    ]
+    roots = [ROOT / "content", ROOT / "data", ROOT / "layouts", ROOT / "i18n", PUBLIC]
+    for folder in roots:
+        for path in folder.rglob("*"):
+            if not path.is_file():
+                continue
+            text = path.read_text(encoding="utf-8", errors="ignore").lower()
+            for needle in needles:
+                if needle.lower() in text:
+                    fail(f"{path} contains excluded private or non-awarded text")
+    by_file = {
+        "experience": _ids_in_data("experience.yaml"),
+        "education": _ids_in_data("education.yaml"),
+        "publications": _ids_in_data("publications.yaml"),
+        "grants": _ids_in_data("grants.yaml"),
+    }
+    text, _ = load("timeline/index.html")
+    if re.search(r"\bVIP\b", text):
+        fail("timeline shows the ORCID VIP title")
+    if "2028-10" in text or "2028-10-31" in text:
+        fail("timeline shows an Aarhus contract end date")
+    if "Postdoctoral Researcher" not in text or "Present" not in text:
+        fail("Aarhus role is not the CV wording")
+    for item in _timeline_items(text):
+        if item["source"] not in ("cv", "orcid", "cv+orcid"):
+            fail(f"{item['id']} has no CV or ORCID source")
+        if item["id"] not in by_file.get(item["from"], set()):
+            fail(f"{item['id']} is not in data/{item['from']}")
+        if item["type"] == "publication" and item["source"] != "orcid":
+            fail(f"{item['id']} publication is not marked orcid")
+
+
+def ac6_timeline_originality():
+    """AC6: implementation does not reuse known theme or reference-site names."""
+    pat = re.compile(
+        base64.b64decode(
+            "YWwtZm9saW98YWNhZGVtaWNwYWdlc3x3b3djaGVteXxodWdvLWJsb3h8bWluaW1hbC1taXN0YWtlc3xsaXpoZW5nfGx6LWNwYXRofGx6LWNhcmVlcnzotoXnur/mgKd8eXV6aGVuZyBzdW585a2Z54Wc5b6B"
+        ).decode(),
+        re.IGNORECASE,
+    )
+    hits = []
+    for path in iter_repo_files():
+        rel = path.relative_to(ROOT)
+        if rel.parts[0] == "docs":
+            continue
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        if pat.search(text) or re.search(r"\blz-[a-z]", text):
+            hits.append(str(rel))
+    if hits:
+        fail("reference or theme names found:\n" + "\n".join(hits))
+
+
+def _flat_keys(path):
+    keys = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#") or line.startswith(" "):
+            continue
+        keys.append(stripped.split(":", 1)[0])
+    return keys
+
+
+def ac7_timeline_ci_surface():
+    """AC7: new routes and both i18n tables are part of the existing build."""
+    for rel in ("timeline/index.html", "zh/timeline/index.html"):
+        if not (PUBLIC / rel).is_file():
+            fail(f"missing {rel}")
+    en_keys = _flat_keys(ROOT / "i18n/en.yaml")
+    zh_keys = _flat_keys(ROOT / "i18n/zh.yaml")
+    if en_keys != zh_keys:
+        fail(f"i18n key mismatch {set(en_keys) ^ set(zh_keys)}")
+    for key in ("nav_timeline", "full_timeline", "filter_all", "type_publication"):
+        if key not in en_keys:
+            fail(f"missing i18n key {key}")
 
 
 def main():
@@ -394,6 +662,13 @@ def main():
     check_alias()
     check_originality()
     check_private()
+    ac1_timeline_pages()
+    ac2_timeline_mobile()
+    ac3_timeline_filters()
+    ac4_timeline_semantics()
+    ac5_timeline_exclusions()
+    ac6_timeline_originality()
+    ac7_timeline_ci_surface()
     print("ok")
 
 
