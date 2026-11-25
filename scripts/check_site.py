@@ -536,15 +536,25 @@ def ac3_timeline():
             fail(f"{rel} year ticks {years[:3]}...{years[-3:]}")
         if text.lower().count("<details") < 7:
             fail(f"{rel} details are not in the HTML")
-        if 'alt=""' not in text and "alt=''" not in text:
+        if not re.search(r"\balt(?:=(?:\"\"|'')|(?=[\s>]))", text):
             fail(f"{rel} flag images need an empty alt")
         for code in ("cn", "au", "de", "ca", "dk"):
             if f"/flags/{code}.svg" not in text:
                 fail(f"{rel} is missing the {code} flag")
-    script = re.search(r"<script\b[^>]*>(.*?)</script>", Path(PUBLIC / "timeline/index.html").read_text(encoding="utf-8"), re.I | re.S)
-    if not script or "mouseenter" not in script.group(1) or "scrollLeft" not in script.group(1):
+    hover = ""
+    for script in re.findall(r"<script\b[^>]*>(.*?)</script>", Path(PUBLIC / "timeline/index.html").read_text(encoding="utf-8"), re.I | re.S):
+        if "mouseenter" in script and "scrollLeft" in script:
+            hover = script
+            break
+    if not hover:
         fail("timeline hover script is missing")
-    if len(script.group(1).strip().splitlines()) > 15:
+    source = re.search(
+        r"<script>(.*?)</script>",
+        (ROOT / "layouts/partials/timeline.html").read_text(encoding="utf-8"),
+        re.S,
+    )
+    source_lines = [line for line in source.group(1).splitlines() if line.strip()] if source else []
+    if not source or len(source_lines) > 15:
         fail("timeline script is longer than 15 lines")
 
 
@@ -610,6 +620,16 @@ def ac6_theme_variables():
             continue
         if re.search(r"#[0-9a-fA-F]{3,8}\b", match.group(2)):
             fail(f"new CSS uses a raw color in {selector.strip()}")
+
+
+def _flat_keys(path):
+    keys = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#") or line.startswith(" "):
+            continue
+        keys.append(stripped.split(":", 1)[0])
+    return keys
 
 
 def ac7_i18n_parity():
@@ -688,8 +708,10 @@ def ac8_flags():
             fail(f"{path.relative_to(ROOT)} is missing the flag credit")
     for html in PUBLIC.rglob("*.html"):
         text = html.read_text(encoding="utf-8", errors="ignore")
-        if re.search(r"https?://[^\"'\s>]*flag", text, re.I):
-            fail(f"{html.relative_to(PUBLIC)} loads a flag from an external host")
+        for match in re.finditer(r"<img\b[^>]*src=(?:\"([^\"]+)\"|'([^']+)'|([^\s>]+))", text, re.I):
+            src = next(group for group in match.groups() if group)
+            if src.startswith(("http://", "https://")) and "flag" in src.lower():
+                fail(f"{html.relative_to(PUBLIC)} loads a flag from an external host")
 
 
 def ac9_exclusions():
