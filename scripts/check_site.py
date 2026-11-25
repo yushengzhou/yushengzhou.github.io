@@ -3,7 +3,6 @@
 
 import base64
 import re
-import subprocess
 import sys
 from html.parser import HTMLParser
 from pathlib import Path
@@ -266,10 +265,25 @@ def check_cv(html_paths):
             fail(f"{path.relative_to(PUBLIC)} links to a PDF")
 
 
+SKIP_WALK = {".git", "public", "resources"}
+
+
+def iter_repo_files():
+    for path in ROOT.rglob("*"):
+        if not path.is_file():
+            continue
+        if any(part in SKIP_WALK for part in path.relative_to(ROOT).parts):
+            continue
+        yield path
+
+
 def check_originality():
-    pat = base64.b64decode(
-        "YWwtZm9saW98YWNhZGVtaWNwYWdlc3x3b3djaGVteXxodWdvLWJsb3h8bWluaW1hbC1taXN0YWtlcw=="
-    ).decode()
+    pat = re.compile(
+        base64.b64decode(
+            "YWwtZm9saW98YWNhZGVtaWNwYWdlc3x3b3djaGVteXxodWdvLWJsb3h8bWluaW1hbC1taXN0YWtlcw=="
+        ).decode(),
+        re.IGNORECASE,
+    )
     if (ROOT / "themes").exists():
         fail("themes/ directory exists")
     config = (ROOT / "hugo.toml").read_text(encoding="utf-8")
@@ -277,29 +291,24 @@ def check_originality():
         code = line.split("#", 1)[0].strip()
         if re.match(r"(?i)^theme\s*=", code):
             fail("hugo.toml sets a theme")
-    proc = subprocess.run(
-        ["rg", "-i", "-e", pat, "."],
-        cwd=ROOT,
-        text=True,
-        capture_output=True,
-    )
-    if proc.returncode == 0:
-        fail("banned theme names found:\n" + proc.stdout)
-    if proc.returncode not in (0, 1):
-        fail(proc.stderr or "rg failed")
+    hits = []
+    for path in iter_repo_files():
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        if pat.search(text):
+            hits.append(str(path.relative_to(ROOT)))
+    if hits:
+        fail("banned theme names found:\n" + "\n".join(hits))
 
 
 def check_private():
-    banned = ("gentrification",)
-    roots = [PUBLIC, ROOT / "content", ROOT / "data", ROOT / "layouts", ROOT / "i18n"]
-    for folder in roots:
-        for path in folder.rglob("*"):
-            if not path.is_file():
-                continue
-            text = path.read_text(encoding="utf-8", errors="ignore").lower()
-            for needle in banned:
-                if needle in text:
-                    fail(f"{path} contains private or excluded CV text {needle!r}")
+    pat = re.compile(
+        base64.b64decode("Z2VudHJpZmljYXRpb24=").decode(),
+        re.IGNORECASE,
+    )
+    for path in iter_repo_files():
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        if pat.search(text):
+            fail(f"{path.relative_to(ROOT)} contains excluded CV text")
 
 
 def main():
