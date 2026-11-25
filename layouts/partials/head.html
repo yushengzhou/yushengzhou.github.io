@@ -1,0 +1,13 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{- if eq .Kind "404" -}}{{ i18n "not_found" }} · {{ site.Title }}{{- else if .IsHome -}}{{ site.Title }}{{- else -}}{{ .Title }} · {{ site.Title }}{{- end -}}</title>
+{{- $desc := .Description -}}
+{{- if not $desc }}{{ $desc = i18n "not_found_body" }}{{ end }}
+<meta name="description" content="{{ $desc }}">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="{{ "favicon.ico" | relURL }}" type="image/x-icon">
+<link rel="canonical" href="{{ .Permalink }}">
+{{ partial "hreflang.html" . }}
+{{ partial "theme-init.html" . }}
+{{- $style := resources.Get "css/main.css" | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">

@@ -1,0 +1,59 @@
+{{ $page := .page }}
+{{ $row := .row }}
+{{ $rec := .rec }}
+{{ $titleTag := .titleTag }}
+{{ $s := newScratch }}
+{{ $s.Set "title" "" }}
+{{ $s.Set "meta" "" }}
+{{ $s.Set "when" "" }}
+{{ $s.Set "summary" "" }}
+{{ $s.Set "authors" false }}
+{{ $s.Set "grant" false }}
+{{ if eq $row.type "position" }}
+  {{ $s.Set "title" (partial "loc.html" (dict "page" $page "value" $rec.role)) }}
+  {{ $s.Set "meta" (printf "%s · %s" (partial "loc.html" (dict "page" $page "value" $rec.org)) (partial "loc.html" (dict "page" $page "value" $rec.place))) }}
+  {{ $s.Set "when" (partial "loc.html" (dict "page" $page "value" $rec.when)) }}
+  {{ with $rec.summary }}
+    {{ $s.Set "summary" (partial "loc.html" (dict "page" $page "value" .)) }}
+  {{ end }}
+{{ else if eq $row.type "education" }}
+  {{ $s.Set "title" (partial "loc.html" (dict "page" $page "value" $rec.degree)) }}
+  {{ $s.Set "meta" (printf "%s · %s" (partial "loc.html" (dict "page" $page "value" $rec.org)) (partial "loc.html" (dict "page" $page "value" $rec.place))) }}
+  {{ $s.Set "when" (partial "loc.html" (dict "page" $page "value" $rec.when)) }}
+{{ else if eq $row.type "publication" }}
+  {{ $s.Set "title" (partial "loc.html" (dict "page" $page "value" $rec.title)) }}
+  {{ $s.Set "meta" (partial "loc.html" (dict "page" $page "value" $rec.venue)) }}
+  {{ $s.Set "when" (printf "%04d-%02d" (int $rec.year) (int $rec.month)) }}
+  {{ $s.Set "authors" true }}
+{{ else if eq $row.type "milestone" }}
+  {{ $s.Set "title" (partial "loc.html" (dict "page" $page "value" $rec.title)) }}
+  {{ $s.Set "meta" (partial "loc.html" (dict "page" $page "value" $rec.funder)) }}
+  {{ $s.Set "when" (partial "loc.html" (dict "page" $page "value" $rec.when)) }}
+  {{ $s.Set "grant" true }}
+{{ end }}
+<li data-tl-type="{{ $row.type }}" data-id="{{ $row.id }}" data-from="{{ $row.from }}" data-start="{{ $row.start }}" data-end="{{ $row.end }}" data-source="{{ $row.source }}">
+  <p class="tl-type">{{ i18n (printf "type_%s" $row.type) }}</p>
+  <p class="tl-when"><time datetime="{{ $row.start }}">{{ $s.Get "when" }}</time></p>
+  {{ printf "<%s>" $titleTag | safeHTML }}{{ $s.Get "title" }}{{ printf "</%s>" $titleTag | safeHTML }}
+  <p class="tl-org">{{ $s.Get "meta" }}</p>
+  {{ if and (eq $row.type "publication") $rec.doi }}
+  <p class="pub-links"><a href="https://doi.org/{{ $rec.doi }}">{{ i18n "doi" }}</a></p>
+  {{ end }}
+  {{ if or ($s.Get "summary") ($s.Get "authors") ($s.Get "grant") }}
+  <details>
+    <summary>{{ i18n "details" }}</summary>
+    {{ with $s.Get "summary" }}<p>{{ . }}</p>{{ end }}
+    {{ if $s.Get "authors" }}
+    <p class="authors">
+      {{- range $i, $name := $rec.authors -}}
+        {{- if $i }}, {{ end -}}
+        {{- if eq $name "Yusheng Zhou" -}}<strong>{{ $name }}</strong>{{- else -}}{{ $name }}{{- end -}}
+      {{- end -}}
+    </p>
+    {{ end }}
+    {{ if $s.Get "grant" }}
+    <p>{{ partial "loc.html" (dict "page" $page "value" $rec.role) }}{{ with $rec.amount }} · {{ . }}{{ end }}</p>
+    {{ end }}
+  </details>
+  {{ end }}
+</li>

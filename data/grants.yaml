@@ -1,0 +1,58 @@
+# Awarded grants only, role as given on the CV (co-applicant).
+# Amounts are printed as written there. Funder names stay in English.
+- id: cihr-sex-gender-htn-2025
+  placeholder: false
+  when:
+    en: "Mar 2025 – Mar 2026"
+    zh: "2025年3月–2026年3月"
+  role:
+    en: "Co-applicant"
+    zh: "共同申请人"
+  title:
+    en: "Role of Sex and Gender on Hypertension-mediated Multi-organ Damage"
+    zh: "生理性别与社会性别在高血压介导的多器官损害中的作用"
+  funder:
+    en: "CIHR Project Grant"
+  amount: "$306,000"
+- id: nwhri-social-prescribing-hf-2024
+  placeholder: false
+  when:
+    en: "Mar 2024 – Mar 2026"
+    zh: "2024年3月–2026年3月"
+  role:
+    en: "Co-applicant"
+    zh: "共同申请人"
+  title:
+    en: "Social Prescribing to Improve Adherence and Outcomes in Women with Heart Failure"
+    zh: "以社会处方改善心力衰竭女性患者的依从性与结局"
+  funder:
+    en: "National Women's Health Research Initiative - Innovation Fund: Operating Grant competition"
+  amount: "$150,000"
+- id: cpho-heat-montreal-2023
+  placeholder: false
+  when:
+    en: "Jul 2023 – Jul 2025"
+    zh: "2023年7月–2025年7月"
+  role:
+    en: "Co-applicant"
+    zh: "共同申请人"
+  title:
+    en: "Estimating Sex and Gender Differences in Heat Vulnerability in Montreal"
+    zh: "估计蒙特利尔高温脆弱性的生理性别与社会性别差异"
+  funder:
+    en: "Catalyst Grant: Chief Public Health Officer (CPHO) Report Competition"
+  amount: "$125,000"
+- id: cihr-gendered-sdoh-af-2021
+  placeholder: false
+  when:
+    en: "Oct 2021 – Sep 2023"
+    zh: "2021年10月–2023年9月"
+  role:
+    en: "Co-applicant"
+    zh: "共同申请人"
+  title:
+    en: "Gendered Social Determinants of Health and Adverse Clinical Outcomes in Atrial Fibrillation"
+    zh: "心房颤动中性别化的健康社会决定因素与不良临床结局"
+  funder:
+    en: "CIHR Project Grant"
+  amount: "$182,836"

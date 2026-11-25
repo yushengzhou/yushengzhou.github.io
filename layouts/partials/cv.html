@@ -1,0 +1,14 @@
+{{/* A cv path renders a download link. A blank language value hides it and does not fall back to another language. */}}
+{{ $s := newScratch }}
+{{ $s.Set "cv" "" }}
+{{ $s.Set "useLang" false }}
+{{ if isset site.Language.Params "cv" }}
+  {{ $s.Set "useLang" true }}
+  {{ $s.Set "cv" site.Language.Params.cv }}
+{{ end }}
+{{ if and (not ($s.Get "useLang")) site.Params.cv }}
+  {{ $s.Set "cv" site.Params.cv }}
+{{ end }}
+{{ with $s.Get "cv" }}
+<p class="cv"><a class="download" href="{{ . | relURL }}">{{ i18n "download_cv" }}</a></p>
+{{ end }}

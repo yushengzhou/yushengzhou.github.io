@@ -1,0 +1,111 @@
+{{ $page := .page }}
+{{ $preview := .preview }}
+{{ $s := newScratch }}
+{{ $s.Set "rows" (slice) }}
+{{ range hugo.Data.timeline }}
+  {{ $row := . }}
+  {{ $gate := newScratch }}
+  {{ $gate.Set "ok" true }}
+  {{ if and $preview (not (in (slice "education" "position") $row.type)) }}
+    {{ $gate.Set "ok" false }}
+  {{ end }}
+  {{ if $gate.Get "ok" }}
+    {{ $found := newScratch }}
+    {{ $found.Set "rec" "" }}
+    {{ if eq $row.from "experience" }}
+      {{ range hugo.Data.experience }}
+        {{ if eq .id $row.id }}{{ $found.Set "rec" . }}{{ end }}
+      {{ end }}
+    {{ else if eq $row.from "education" }}
+      {{ range hugo.Data.education }}
+        {{ if eq .id $row.id }}{{ $found.Set "rec" . }}{{ end }}
+      {{ end }}
+    {{ else if eq $row.from "publications" }}
+      {{ range hugo.Data.publications }}
+        {{ if eq .id $row.id }}{{ $found.Set "rec" . }}{{ end }}
+      {{ end }}
+    {{ else if eq $row.from "grants" }}
+      {{ range hugo.Data.grants }}
+        {{ if eq .id $row.id }}{{ $found.Set "rec" . }}{{ end }}
+      {{ end }}
+    {{ end }}
+    {{ $bits := split $row.start "-" }}
+    {{ $year := int (index $bits 0) }}
+    {{ $month := 0 }}
+    {{ if eq (len $bits) 2 }}
+      {{ $raw := strings.TrimLeft "0" (index $bits 1) }}
+      {{ if not $raw }}{{ $raw = "0" }}{{ end }}
+      {{ $month = int $raw }}
+    {{ end }}
+    {{ $startKey := add (mul $year 100) $month }}
+    {{ $ends := newScratch }}
+    {{ $ends.Set "key" 999999 }}
+    {{ if $row.end }}
+      {{ $endBits := split $row.end "-" }}
+      {{ $endYear := int (index $endBits 0) }}
+      {{ $endMonth := 0 }}
+      {{ if eq (len $endBits) 2 }}
+        {{ $endRaw := strings.TrimLeft "0" (index $endBits 1) }}
+        {{ if not $endRaw }}{{ $endRaw = "0" }}{{ end }}
+        {{ $endMonth = int $endRaw }}
+      {{ end }}
+      {{ $ends.Set "key" (add (mul $endYear 100) $endMonth) }}
+    {{ end }}
+    {{ $key := printf "%06d-%06d-%s" $startKey ($ends.Get "key") $row.id }}
+    {{ $s.Set "rows" ($s.Get "rows" | append (dict "key" $key "row" $row "rec" ($found.Get "rec"))) }}
+  {{ end }}
+{{ end }}
+{{ $items := sort ($s.Get "rows") "key" "desc" }}
+{{ $titleTag := "h2" }}
+{{ if $preview }}
+  {{ $titleTag = "h3" }}
+<section class="block" aria-labelledby="timeline-heading" data-timeline="preview">
+  <h2 id="timeline-heading">{{ i18n "nav_timeline" }}</h2>
+{{ else }}
+<div data-timeline="full">
+  <div class="tl-filters" role="group" aria-label="{{ i18n "timeline_filters" }}">
+    <button type="button" data-tl-filter="all" aria-pressed="true">{{ i18n "filter_all" }}</button>
+    <button type="button" data-tl-filter="education" aria-pressed="false">{{ i18n "filter_education" }}</button>
+    <button type="button" data-tl-filter="position" aria-pressed="false">{{ i18n "filter_position" }}</button>
+    <button type="button" data-tl-filter="publication" aria-pressed="false">{{ i18n "filter_publication" }}</button>
+    <button type="button" data-tl-filter="milestone" aria-pressed="false">{{ i18n "filter_milestone" }}</button>
+  </div>
+{{ end }}
+<ol class="timeline">
+  {{ range $items }}
+    {{ partial "timeline-item.html" (dict "page" $page "row" .row "rec" .rec "titleTag" $titleTag) }}
+  {{ end }}
+</ol>
+{{ if $preview }}
+  <p><a class="more" href="{{ "timeline/" | relLangURL }}">{{ i18n "full_timeline" }}</a></p>
+</section>
+{{ else }}
+<script>
+(function () {
+  var root = document.querySelector("[data-timeline='full']");
+  if (!root) return;
+  var buttons = root.querySelectorAll("[data-tl-filter]");
+  function apply(type) {
+    var i;
+    for (i = 0; i < buttons.length; i++) {
+      var on = buttons[i].getAttribute("data-tl-filter") === type;
+      buttons[i].setAttribute("aria-pressed", on ? "true" : "false");
+    }
+    var items = root.querySelectorAll("[data-tl-type]");
+    for (i = 0; i < items.length; i++) {
+      var show = type === "all" || items[i].getAttribute("data-tl-type") === type;
+      if (show) items[i].removeAttribute("hidden");
+      else items[i].setAttribute("hidden", "");
+    }
+  }
+  root.addEventListener("click", function (event) {
+    var node = event.target;
+    if (!node || !node.closest) return;
+    var button = node.closest("[data-tl-filter]");
+    if (!button) return;
+    apply(button.getAttribute("data-tl-filter"));
+  });
+})();
+</script>
+</div>
+{{ end }}

@@ -1,0 +1,30 @@
+{{ $page := . }}
+{{ $about := "/" | relLangURL }}
+{{ $time := "timeline/" | relLangURL }}
+{{ $pubs := "publications/" | relLangURL }}
+{{ $proj := "projects/" | relLangURL }}
+{{ $here := $page.RelPermalink }}
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="{{ $about }}">{{ site.Title }}</a>
+    <div class="tools">
+      {{ range hugo.Sites }}
+        {{ if ne .Language.Lang $page.Lang }}
+          {{ $href := partial "href.html" (dict "page" $page "lang" .Language.Lang "abs" false) }}
+          <a class="lang-switch" href="{{ $href }}" hreflang="{{ .Language.Lang }}" lang="{{ .Language.Locale }}" aria-label="{{ i18n "lang_switch" }}: {{ .Language.Label }}">{{ .Language.Label }}</a>
+        {{ end }}
+      {{ end }}
+      <div class="theme-switch" role="group" aria-label="{{ i18n "theme_group" }}">
+        <button type="button" data-theme-set="light" aria-pressed="false">{{ i18n "theme_light" }}</button>
+        <button type="button" data-theme-set="dark" aria-pressed="false">{{ i18n "theme_dark" }}</button>
+        <button type="button" data-theme-set="system" aria-pressed="false">{{ i18n "theme_system" }}</button>
+      </div>
+    </div>
+    <nav class="nav" aria-label="{{ i18n "nav_primary" }}">
+      <a href="{{ $about }}"{{ if eq $here $about }} aria-current="page"{{ end }}>{{ i18n "nav_about" }}</a>
+      <a href="{{ $time }}"{{ if eq $here $time }} aria-current="page"{{ end }}>{{ i18n "nav_timeline" }}</a>
+      <a href="{{ $pubs }}"{{ if eq $here $pubs }} aria-current="page"{{ end }}>{{ i18n "nav_publications" }}</a>
+      <a href="{{ $proj }}"{{ if eq $here $proj }} aria-current="page"{{ end }}>{{ i18n "nav_projects" }}</a>
+    </nav>
+  </div>
+</header>

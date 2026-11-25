@@ -1,0 +1,42 @@
+- id: mhh-phd
+  placeholder: false
+  degree:
+    en: "Ph.D. Public Health"
+    zh: "公共卫生博士"
+  org:
+    en: "Hannover Medical School"
+    zh: "Hannover Medical School"
+  place:
+    en: "Hannover, Germany"
+    zh: "汉诺威, 德国"
+  when:
+    en: "Dec 2016 – Oct 2021"
+    zh: "2016年12月–2021年10月"
+- id: uq-msc
+  placeholder: false
+  degree:
+    en: "M.Sc. in Public Health"
+    zh: "公共卫生理学硕士"
+  org:
+    en: "University of Queensland"
+    zh: "University of Queensland"
+  place:
+    en: "Brisbane, Australia"
+    zh: "布里斯班, 澳大利亚"
+  when:
+    en: "Sep 2013 – Jul 2015"
+    zh: "2013年9月–2015年7月"
+- id: zcmu-bs
+  placeholder: false
+  degree:
+    en: "B.S. in Chinese Medicine"
+    zh: "中医学学士"
+  org:
+    en: "Zhejiang Chinese Medicine University"
+    zh: "Zhejiang Chinese Medicine University"
+  place:
+    en: "Hangzhou, China"
+    zh: "杭州, 中国"
+  when:
+    en: "Sep 2008 – Jul 2013"
+    zh: "2008年9月–2013年7月"

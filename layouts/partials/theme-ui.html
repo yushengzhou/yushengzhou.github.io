@@ -1,0 +1,49 @@
+<script>
+(function () {
+  var root = document.documentElement;
+  var query = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function systemTheme() {
+    return query.matches ? "dark" : "light";
+  }
+
+  function preference() {
+    return root.getAttribute("data-theme-pref") || "system";
+  }
+
+  function apply(pref) {
+    var theme = pref === "system" ? systemTheme() : pref;
+    root.setAttribute("data-theme", theme);
+    root.setAttribute("data-theme-pref", pref);
+    root.style.colorScheme = theme;
+    var buttons = document.querySelectorAll("[data-theme-set]");
+    for (var i = 0; i < buttons.length; i++) {
+      var on = buttons[i].getAttribute("data-theme-set") === pref;
+      buttons[i].setAttribute("aria-pressed", on ? "true" : "false");
+    }
+    try {
+      localStorage.setItem("theme", pref);
+    } catch (err) {}
+  }
+
+  document.addEventListener("click", function (event) {
+    var node = event.target;
+    if (!node || !node.closest) {
+      return;
+    }
+    var button = node.closest("[data-theme-set]");
+    if (!button) {
+      return;
+    }
+    apply(button.getAttribute("data-theme-set"));
+  });
+
+  query.addEventListener("change", function () {
+    if (preference() === "system") {
+      apply("system");
+    }
+  });
+
+  apply(preference());
+})();
+</script>

@@ -1,0 +1,6 @@
+{{ $lang := .page.Lang }}
+{{ $value := .value }}
+{{ $text := "" }}
+{{ with index $value "en" }}{{ $text = . }}{{ end }}
+{{ with index $value $lang }}{{ $text = . }}{{ end }}
+{{ return $text }}

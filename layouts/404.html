@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale }}">
+<head>
+  {{ partial "head.html" . }}
+</head>
+<body>
+  <a class="skip" href="#content">{{ i18n "skip" }}</a>
+  {{ partial "header.html" . }}
+  <main id="content" tabindex="-1">
+    <div class="wrap">
+      <h1>{{ i18n "not_found" }}</h1>
+      <p>{{ i18n "not_found_body" }}</p>
+      <p><a class="more" href="{{ "/" | relLangURL }}">{{ i18n "nav_about" }}</a></p>
+    </div>
+  </main>
+  {{ partial "footer.html" . }}
+  {{ partial "theme-ui.html" . }}
+</body>
+</html>
