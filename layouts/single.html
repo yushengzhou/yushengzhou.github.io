@@ -7,4 +7,7 @@
 {{ if eq .Params.data "publications" }}
   {{ partial "publication-list.html" (dict "page" . "selectedOnly" false "yearTag" "h2" "titleTag" "h3") }}
 {{ end }}
+{{ if eq .Params.data "timeline" }}
+  {{ partial "timeline.html" (dict "page" . "preview" false) }}
+{{ end }}
 {{ end }}
