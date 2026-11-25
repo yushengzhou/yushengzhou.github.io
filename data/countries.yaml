@@ -1,0 +1,25 @@
+cn:
+  flag: /flags/cn.svg
+  name:
+    en: China
+    zh: 中国
+au:
+  flag: /flags/au.svg
+  name:
+    en: Australia
+    zh: 澳大利亚
+de:
+  flag: /flags/de.svg
+  name:
+    en: Germany
+    zh: 德国
+ca:
+  flag: /flags/ca.svg
+  name:
+    en: Canada
+    zh: 加拿大
+dk:
+  flag: /flags/dk.svg
+  name:
+    en: Denmark
+    zh: 丹麦

@@ -1,0 +1,16 @@
+{{ $raw := .value }}
+{{ $isEnd := .end }}
+{{ if not $raw }}
+  {{ return add (mul now.Year 12) (int now.Month) }}
+{{ end }}
+{{ $bits := split $raw "-" }}
+{{ $year := int (index $bits 0) }}
+{{ if eq (len $bits) 1 }}
+  {{ if $isEnd }}
+    {{ return mul (add $year 1) 12 }}
+  {{ end }}
+  {{ return mul $year 12 }}
+{{ end }}
+{{ $monthRaw := strings.TrimLeft "0" (index $bits 1) }}
+{{ if not $monthRaw }}{{ $monthRaw = "0" }}{{ end }}
+{{ return add (mul $year 12) (sub (int $monthRaw) 1) }}

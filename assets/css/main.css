@@ -32,6 +32,10 @@
   box-sizing: border-box;
 }
 
+html {
+  overflow-x: clip;
+}
+
 body {
   margin: 0;
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
@@ -293,8 +297,19 @@ h4 {
   padding-block: 0.5rem 1.5rem;
 }
 
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  align-items: center;
+}
+
 .foot p {
   margin: 0;
+}
+
+.foot p:last-child {
+  flex-basis: 100%;
 }
 
 .timeline {
@@ -376,6 +391,174 @@ h4 {
   .timeline * {
     animation: none;
     transition: none;
+  }
+}
+
+main:has(.home-cards) {
+  padding-block: 0.6rem 0.75rem;
+}
+
+main:has(.home-cards) .hero {
+  margin-bottom: 0.35rem;
+}
+
+main:has(.home-cards) .prose h2 {
+  margin: 0.55rem 0 0.2rem;
+}
+
+main:has(.home-cards) .prose li,
+main:has(.home-cards) .prose li + li {
+  margin: 0;
+  line-height: 1.35;
+}
+
+.home-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-card {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.home-card span {
+  color: var(--muted);
+}
+
+.tl-legend {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+}
+
+.tl-scroll {
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.tl-track {
+  --tl-year: 5rem;
+  padding-right: 14rem;
+  box-sizing: content-box;
+}
+
+.tl-years {
+  display: flex;
+  border-bottom: 1px solid var(--line);
+}
+
+.tl-tick {
+  flex: 1 0 var(--tl-year);
+  scroll-snap-align: start;
+  color: var(--muted);
+  padding: 0.35rem 0;
+}
+
+.tl-row {
+  position: relative;
+  height: 4.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tl-entry {
+  position: absolute;
+  top: 0.4rem;
+  height: 3.8rem;
+  margin: 0;
+  overflow: hidden;
+  scroll-snap-align: start;
+}
+
+.tl-entry summary {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  height: 100%;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 0.4rem;
+  overflow: hidden;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.tl-edu {
+  background: repeating-linear-gradient(135deg, var(--surface), var(--surface) 4px, var(--line) 4px, var(--line) 6px);
+  border: 1px solid var(--line);
+}
+
+.tl-pos {
+  background: var(--surface);
+  border: 2px solid var(--text);
+}
+
+.tl-flag {
+  display: block;
+  width: 1.25rem;
+  height: auto;
+}
+
+.tl-name,
+.tl-years,
+.tl-kind {
+  white-space: nowrap;
+}
+
+.tl-kind,
+.tl-years {
+  color: var(--muted);
+}
+
+.tl-panel {
+  position: sticky;
+  left: 0.5rem;
+  z-index: 1;
+  max-width: 20rem;
+  margin-top: 0.35rem;
+  padding: 0.65rem 0.75rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+
+.tl-panel p {
+  margin: 0.15rem 0;
+}
+
+@media (min-width: 40rem) {
+  .home-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 64rem) {
+  .home-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-scroll {
+    scroll-behavior: auto;
   }
 }
 

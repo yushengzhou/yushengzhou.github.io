@@ -8,5 +8,6 @@
     {{ with $p.website }}
     <p><a href="{{ . }}">{{ partial "loc.html" (dict "page" $page "value" $p.website_name) }}</a></p>
     {{ end }}
+    <p>{{ i18n "flag_credit" }}</p>
   </div>
 </footer>

@@ -1,7 +1,8 @@
 {{ $page := . }}
 {{ $about := "/" | relLangURL }}
-{{ $time := "timeline/" | relLangURL }}
 {{ $pubs := "publications/" | relLangURL }}
+{{ $time := "timeline/" | relLangURL }}
+{{ $grants := "grants/" | relLangURL }}
 {{ $proj := "projects/" | relLangURL }}
 {{ $here := $page.RelPermalink }}
 <header class="site-header">
@@ -22,8 +23,9 @@
     </div>
     <nav class="nav" aria-label="{{ i18n "nav_primary" }}">
       <a href="{{ $about }}"{{ if eq $here $about }} aria-current="page"{{ end }}>{{ i18n "nav_about" }}</a>
-      <a href="{{ $time }}"{{ if eq $here $time }} aria-current="page"{{ end }}>{{ i18n "nav_timeline" }}</a>
       <a href="{{ $pubs }}"{{ if eq $here $pubs }} aria-current="page"{{ end }}>{{ i18n "nav_publications" }}</a>
+      <a href="{{ $time }}"{{ if eq $here $time }} aria-current="page"{{ end }}>{{ i18n "nav_timeline" }}</a>
+      <a href="{{ $grants }}"{{ if eq $here $grants }} aria-current="page"{{ end }}>{{ i18n "nav_grants" }}</a>
       <a href="{{ $proj }}"{{ if eq $here $proj }} aria-current="page"{{ end }}>{{ i18n "nav_projects" }}</a>
     </nav>
   </div>

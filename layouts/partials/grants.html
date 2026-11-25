@@ -7,7 +7,7 @@
     {{ if .placeholder }}<span class="badge">{{ i18n "placeholder" }}</span>{{ end }}
     <h3>{{ partial "loc.html" (dict "page" $page "value" .title) }}</h3>
     <p class="meta">{{ partial "loc.html" (dict "page" $page "value" .when) }}</p>
-    <p>{{ partial "loc.html" (dict "page" $page "value" .role) }} · {{ partial "loc.html" (dict "page" $page "value" .funder) }}{{ with .amount }} · {{ . }}{{ end }}</p>
+    <p>{{ partial "loc.html" (dict "page" $page "value" .role) }} · {{ partial "loc.html" (dict "page" $page "value" .funder) }}</p>
   </article>
   {{ end }}
 </section>

@@ -21,7 +21,5 @@
 <div class="prose">
   {{ .Content }}
 </div>
-{{ partial "timeline.html" (dict "page" . "preview" true) }}
-{{ partial "grants.html" . }}
-{{ partial "selected.html" . }}
+{{ partial "home-cards.html" . }}
 {{ end }}
