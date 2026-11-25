@@ -1,0 +1,34 @@
+{{ $page := .page }}
+{{ $lang := .lang }}
+{{ $abs := .abs }}
+{{ $s := newScratch }}
+{{ $s.Set "href" "" }}
+{{ if eq $page.Lang $lang }}
+  {{ if $abs }}
+    {{ $s.Set "href" $page.Permalink }}
+  {{ else }}
+    {{ $s.Set "href" $page.RelPermalink }}
+  {{ end }}
+{{ else }}
+  {{ range $page.Translations }}
+    {{ if eq .Lang $lang }}
+      {{ if $abs }}
+        {{ $s.Set "href" .Permalink }}
+      {{ else }}
+        {{ $s.Set "href" .RelPermalink }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ if not ($s.Get "href") }}
+    {{ range hugo.Sites }}
+      {{ if eq .Language.Lang $lang }}
+        {{ if $abs }}
+          {{ $s.Set "href" .Home.Permalink }}
+        {{ else }}
+          {{ $s.Set "href" .Home.RelPermalink }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ return $s.Get "href" }}

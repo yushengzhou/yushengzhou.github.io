@@ -1,0 +1,28 @@
+{{ define "main" }}
+{{ $p := hugo.Data.profile }}
+<header class="hero">
+  <div class="identity">
+    <div class="portrait" data-id="portrait" data-placeholder="{{ if $p.portrait_placeholder }}true{{ else }}false{{ end }}">
+      {{ if $p.portrait_placeholder }}
+      <!-- PLACEHOLDER: replace static/img/portrait.svg with a photograph -->
+      {{ end }}
+      <img src="{{ $p.portrait | relURL }}" width="88" height="88" alt="{{ i18n "portrait_alt" }}">
+      {{ if $p.portrait_placeholder }}<span class="badge">{{ i18n "placeholder" }}</span>{{ end }}
+    </div>
+    <div>
+      <h1>{{ $p.name }}</h1>
+      <p class="role">{{ partial "loc.html" (dict "page" . "value" $p.role) }}</p>
+      <p class="affil">{{ partial "loc.html" (dict "page" . "value" $p.affiliation) }}</p>
+      <p class="contact"><span class="label">{{ i18n "email" }}</span> <a class="email" href="mailto:{{ $p.email }}">{{ $p.email }}</a></p>
+      {{ partial "cv.html" . }}
+    </div>
+  </div>
+</header>
+<div class="prose">
+  {{ .Content }}
+</div>
+{{ partial "experience.html" . }}
+{{ partial "education.html" . }}
+{{ partial "grants.html" . }}
+{{ partial "selected.html" . }}
+{{ end }}

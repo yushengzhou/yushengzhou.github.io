@@ -1,0 +1,15 @@
+name: "Yusheng Zhou"
+email: "yushengzhou29@hotmail.com"
+orcid: "0009-0003-6736-6496"
+portrait: "/img/portrait.svg"
+portrait_placeholder: true
+website: "https://pure.au.dk/portal/en/persons/730e8b5e-3ec4-4a13-b8dc-19618f39ba9f"
+website_name:
+  en: "Aarhus University profile"
+  zh: "Aarhus University 主页"
+role:
+  en: "Postdoctoral Researcher"
+  zh: "博士后研究员"
+affiliation:
+  en: "Department of Public Health, Aarhus University, Aarhus, Denmark"
+  zh: "Department of Public Health, Aarhus University, 奥胡斯, 丹麦"

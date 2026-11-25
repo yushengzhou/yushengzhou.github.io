@@ -1,0 +1,26 @@
+{{ $page := .page }}
+{{ $pub := .pub }}
+{{ $titleTag := or .titleTag "h3" }}
+{{ $title := partial "loc.html" (dict "page" $page "value" $pub.title) }}
+{{ $venue := partial "loc.html" (dict "page" $page "value" $pub.venue) }}
+{{ $month := int (default 0 $pub.month) }}
+{{ $stamp := printf "%04d-%02d" (int $pub.year) $month }}
+<article class="pub" data-id="{{ $pub.id }}" data-year="{{ $pub.year }}" data-month="{{ $month }}" data-placeholder="{{ if $pub.placeholder }}true{{ else }}false{{ end }}">
+  {{ if $pub.placeholder }}<span class="badge">{{ i18n "placeholder" }}</span>{{ end }}
+  <p class="authors">
+    {{- range $i, $name := $pub.authors -}}
+      {{- if $i }}, {{ end -}}
+      {{- if eq $name "Yusheng Zhou" -}}<strong>{{ $name }}</strong>{{- else -}}{{ $name }}{{- end -}}
+    {{- end -}}
+  </p>
+  {{ printf "<%s class=\"pub-title\">" $titleTag | safeHTML }}{{ $title }}{{ printf "</%s>" $titleTag | safeHTML }}
+  <p class="meta"><span class="venue">{{ $venue }}</span> · <time datetime="{{ $stamp }}">{{ $stamp }}</time></p>
+  {{ if or $pub.doi $pub.pdf $pub.preprint $pub.code }}
+  <p class="pub-links">
+    {{ with $pub.doi }}<a href="https://doi.org/{{ . }}">{{ i18n "doi" }}</a>{{ end }}
+    {{ with $pub.pdf }}<a href="{{ . }}">{{ i18n "pdf" }}</a>{{ end }}
+    {{ with $pub.preprint }}<a href="{{ . }}">{{ i18n "preprint" }}</a>{{ end }}
+    {{ with $pub.code }}<a href="{{ . }}">{{ i18n "code" }}</a>{{ end }}
+  </p>
+  {{ end }}
+</article>

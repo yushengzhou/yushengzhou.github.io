@@ -1,0 +1,12 @@
+{{ $page := . }}
+{{ $p := hugo.Data.profile }}
+<footer class="site-footer">
+  <div class="wrap foot">
+    <p>{{ $p.name }}</p>
+    <p><a href="mailto:{{ $p.email }}">{{ $p.email }}</a></p>
+    <p><a href="https://orcid.org/{{ $p.orcid }}">ORCID {{ $p.orcid }}</a></p>
+    {{ with $p.website }}
+    <p><a href="{{ . }}">{{ partial "loc.html" (dict "page" $page "value" $p.website_name) }}</a></p>
+    {{ end }}
+  </div>
+</footer>

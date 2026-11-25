@@ -1,0 +1,302 @@
+:root {
+  color-scheme: light;
+  --bg: #f6f5f2;
+  --surface: #fffcf7;
+  --text: #1c1917;
+  --muted: #44403c;
+  --link: #1e3a8a;
+  --line: #d6d3d1;
+  --badge-bg: #ffedd5;
+  --badge-text: #7c2d12;
+  --focus: #1d4ed8;
+  --header: #fffcf7;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #141210;
+  --surface: #1c1917;
+  --text: #fafaf9;
+  --muted: #e7e5e4;
+  --link: #bfdbfe;
+  --line: #44403c;
+  --badge-bg: #431407;
+  --badge-text: #ffedd5;
+  --focus: #93c5fd;
+  --header: #1c1917;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
+  overflow-wrap: break-word;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.skip {
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  transform: translateY(-150%);
+  background: var(--surface);
+  color: var(--text);
+  padding: 0.5rem 0.75rem;
+  z-index: 5;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.skip:focus {
+  transform: translateY(0.5rem);
+}
+
+.wrap {
+  width: min(100% - 2rem, 42rem);
+  margin-inline: auto;
+}
+
+.site-header,
+.site-footer {
+  background: var(--header);
+}
+
+.site-header {
+  border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.75rem;
+  padding-block: 0.25rem;
+}
+
+.brand {
+  font-weight: 700;
+  color: var(--text);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  margin-right: auto;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: 100%;
+  gap: 0.25rem;
+}
+
+.nav a,
+.lang-switch,
+.more,
+.email,
+.foot a,
+.pub-links a,
+.projects a,
+.download {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav a,
+.lang-switch {
+  color: var(--text);
+  padding-inline: 0.15rem;
+}
+
+.nav a[aria-current="page"] {
+  font-weight: 700;
+  text-decoration-thickness: 2px;
+}
+
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.theme-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.theme-switch button {
+  font: inherit;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 0.25rem;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 0.7rem;
+  cursor: pointer;
+}
+
+.theme-switch button[aria-pressed="true"] {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 0.15em;
+}
+
+.nav a,
+.brand,
+.lang-switch,
+.foot a {
+  text-decoration-thickness: 1px;
+}
+
+main {
+  padding-block: 1.25rem 2rem;
+}
+
+.hero {
+  margin-bottom: 1.5rem;
+}
+
+.identity {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.portrait {
+  width: 5.5rem;
+  flex: none;
+}
+
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.25rem;
+  background: var(--line);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.25;
+}
+
+.hero h1 {
+  margin: 0 0 0.2rem;
+  font-size: 1.85rem;
+}
+
+.role,
+.affil,
+.contact,
+.meta {
+  margin: 0;
+}
+
+.affil,
+.meta,
+.label {
+  color: var(--muted);
+}
+
+.contact {
+  margin-top: 0.35rem;
+}
+
+.prose h2,
+.block h2 {
+  margin: 2rem 0 0.6rem;
+  font-size: 1.35rem;
+}
+
+.prose ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.prose li + li {
+  margin-top: 0.25rem;
+}
+
+.item,
+.pub {
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.item h3,
+.pub-title {
+  margin: 0.15rem 0;
+  font-size: 1.05rem;
+}
+
+.authors {
+  margin: 0;
+}
+
+.year {
+  margin: 1.25rem 0 0;
+  font-size: 1.2rem;
+}
+
+.pub-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.9rem;
+  margin: 0.15rem 0 0;
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 0.35rem;
+  padding: 0.1rem 0.35rem;
+  background: var(--badge-bg);
+  color: var(--badge-text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+.empty {
+  margin-top: 1rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding-block: 0.5rem 1.5rem;
+}
+
+.foot p {
+  margin: 0;
+}
+
+@media (min-width: 48rem) {
+  .hero h1 {
+    font-size: 2.25rem;
+  }
+}

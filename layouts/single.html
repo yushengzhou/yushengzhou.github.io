@@ -1,0 +1,10 @@
+{{ define "main" }}
+<h1>{{ .Title }}</h1>
+{{ if .Params.placeholder }}<p><span class="badge">{{ i18n "placeholder" }}</span></p>{{ end }}
+<div class="prose">
+  {{ .Content }}
+</div>
+{{ if eq .Params.data "publications" }}
+  {{ partial "publication-list.html" (dict "page" . "selectedOnly" false "yearTag" "h2" "titleTag" "h3") }}
+{{ end }}
+{{ end }}

@@ -1,0 +1,17 @@
+{{ $page := . }}
+{{ with hugo.Data.experience }}
+<section class="block" aria-labelledby="experience-heading">
+  <h2 id="experience-heading">{{ i18n "experience" }}</h2>
+  {{ range . }}
+  <article class="item" data-id="{{ .id }}" data-placeholder="{{ if .placeholder }}true{{ else }}false{{ end }}">
+    {{ if .placeholder }}<span class="badge">{{ i18n "placeholder" }}</span>{{ end }}
+    <h3>{{ partial "loc.html" (dict "page" $page "value" .role) }}</h3>
+    <p class="meta">{{ partial "loc.html" (dict "page" $page "value" .org) }} · {{ partial "loc.html" (dict "page" $page "value" .place) }}</p>
+    <p class="meta">{{ partial "loc.html" (dict "page" $page "value" .when) }}</p>
+    {{ with .summary }}
+    <p>{{ partial "loc.html" (dict "page" $page "value" .) }}</p>
+    {{ end }}
+  </article>
+  {{ end }}
+</section>
+{{ end }}

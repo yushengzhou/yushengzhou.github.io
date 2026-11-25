@@ -1,0 +1,8 @@
+{{ $page := . }}
+{{ range hugo.Sites }}
+  {{ $href := partial "href.html" (dict "page" $page "lang" .Language.Lang "abs" true) }}
+  <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ $href }}">
+  {{ if .Language.IsDefault }}
+  <link rel="alternate" hreflang="x-default" href="{{ $href }}">
+  {{ end }}
+{{ end }}

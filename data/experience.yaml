@@ -1,0 +1,67 @@
+# Display order is current role first. Summaries are one sentence from the CV.
+# Hannover lists a role and dates only; no description is invented.
+- id: au-dph-2026
+  placeholder: false
+  role:
+    en: "Postdoctoral Researcher"
+    zh: "博士后研究员"
+  org:
+    en: "Department of Public Health, Aarhus University"
+    zh: "Department of Public Health, Aarhus University"
+  place:
+    en: "Aarhus, Denmark"
+    zh: "奥胡斯, 丹麦"
+  when:
+    en: "Nov 2026 – Present"
+    zh: "2026年11月–至今"
+  summary:
+    en: "Running analyses of Danish nationwide registers through Statistics Denmark (NICO project) on the association between neighbourhood environmental factors and children's weight status."
+    zh: "通过丹麦统计局（Statistics Denmark）分析丹麦全国登记数据（NICO 项目），研究邻里环境因素与儿童体重状况之间的关联。"
+- id: uhn-kite-2025
+  placeholder: false
+  role:
+    en: "Post-Doctoral Fellow"
+    zh: "博士后"
+  org:
+    en: "Cardiovascular Prevention and Rehabilitation Program, KITE, Toronto Rehab, University Health Network (UHN)"
+    zh: "Cardiovascular Prevention and Rehabilitation Program, KITE, Toronto Rehab, University Health Network (UHN)"
+  place:
+    en: "Toronto, Canada"
+    zh: "多伦多, 加拿大"
+  when:
+    en: "Oct 2025 – Oct 2026"
+    zh: "2025年10月–2026年10月"
+  summary:
+    en: "Co-led a community steering committee on climate hazards and cardiovascular health, a national mixed-methods study of how sex, gender, and socioeconomic status shape vulnerability to climate stressors, and a computerized decision-support system that automates personalized resistance-exercise prescriptions for patients with coronary artery disease."
+    zh: "共同领导关注气候危害（极端高温与低温）和心血管健康的社区指导委员会，开展关于生理性别、社会性别和社会经济地位如何加剧气候应激脆弱性的全国混合方法研究，并开发为冠心病患者自动制定个体化抗阻运动方案的计算机化决策支持系统。"
+- id: muhc-2023
+  placeholder: false
+  role:
+    en: "Post-Doctoral Fellow"
+    zh: "博士后"
+  org:
+    en: "The Research Institute of the McGill University Health Centre"
+    zh: "The Research Institute of the McGill University Health Centre"
+  place:
+    en: "Montréal, Canada"
+    zh: "蒙特利尔, 加拿大"
+  when:
+    en: "Jan 2023 – Oct 2025"
+    zh: "2023年1月–2025年10月"
+  summary:
+    en: "Led intersectional analyses in the UK Biobank and the Canadian Longitudinal Study on Aging of how sex, gender, and socioeconomic determinants of health cluster and predict adverse cardiovascular outcomes in atrial fibrillation and stroke, and applied distributed lag non-linear models to the sex-differentiated effects of extreme heat on cardiovascular hospitalizations."
+    zh: "利用 UK Biobank 和 Canadian Longitudinal Study on Aging，分析生理性别、社会性别和健康社会经济决定因素如何聚集并预测心房颤动与卒中的不良心血管结局，并应用分布滞后非线性模型量化极端高温对心血管住院影响的性别差异。"
+- id: mhh-grad-2021
+  placeholder: false
+  role:
+    en: "Graduate Researcher"
+    zh: "研究生研究人员"
+  org:
+    en: "Hannover Medical School"
+    zh: "汉诺威医学院"
+  place:
+    en: "Hannover, Germany"
+    zh: "汉诺威, 德国"
+  when:
+    en: "2021 – 2022"
+    zh: "2021–2022年"

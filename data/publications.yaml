@@ -1,0 +1,172 @@
+# Publications from public ORCID 0009-0003-6736-6496.
+# One entry per ORCID work group. placeholder is false because each record is from ORCID.
+# Omit title.zh / venue.zh to fall back to the title of record. Do not invent translations.
+# selected marks the three newest by year, then month. The 2025-12 tie keeps the record with a publication day.
+# The site sorts by year, then month. Entries that share a year and month stay in this file's order.
+- id: "10.1161/JAHA.126.049128"
+  placeholder: false
+  type: journal
+  year: 2026
+  month: 7
+  selected: true
+  authors:
+    - "Yusheng Zhou"
+    - "Jonathan Houle"
+    - "Valeria Raparelli"
+    - "Colleen M Norris"
+    - "Louise Pilote"
+  title:
+    en: "Clustering of Social Determinants of Health and Their Association With Adverse Cardiovascular Outcomes in Atrial Fibrillation"
+  venue:
+    en: "Journal of the American Heart Association"
+  doi: "10.1161/JAHA.126.049128"
+- id: "10.1016/j.cjco.2026.02.004"
+  placeholder: false
+  type: journal
+  year: 2026
+  month: 6
+  selected: true
+  authors:
+    - "Yusheng Zhou"
+    - "Sasha Ramkhelawan"
+    - "Bulemba Katende"
+    - "Hassan Behlouli"
+    - "Louise Pilote"
+  title:
+    en: "Sex Differences in the Effects of High Temperature on Cardiovascular Disease Hospitalizations in Montreal"
+  venue:
+    en: "CJC Open"
+  doi: "10.1016/j.cjco.2026.02.004"
+- id: "10.1136/openhrt-2025-003732"
+  placeholder: false
+  type: journal
+  year: 2025
+  month: 12
+  selected: true
+  authors:
+    - "Yusheng Zhou"
+    - "Jonathan Houle"
+    - "Valeria Raparelli"
+    - "Colleen M. Norris"
+    - "Louise Pilote"
+  title:
+    en: "Sex differences in the association of social determinants of health and adverse cardiovascular outcomes in patients with atrial fibrillation"
+  venue:
+    en: "Open Heart"
+  doi: "10.1136/openhrt-2025-003732"
+# ORCID also has a self-record publication date of 2025-04-12 for this DOI. This entry uses the institutional record (2025-12).
+- id: "10.1186/s12940-025-01175-6"
+  placeholder: false
+  type: journal
+  year: 2025
+  month: 12
+  selected: false
+  authors:
+    - "Yusheng Zhou"
+    - "Léa Larochelle"
+    - "Fahima Afsari Khan"
+    - "Louise Pilote"
+  title:
+    en: "Sex differences in the impact of extreme heat on cardiovascular disease outcomes: a systematic review and meta-analysis"
+  venue:
+    en: "Environmental Health: A Global Access Science Source"
+  doi: "10.1186/s12940-025-01175-6"
+- id: "10.1177/17474930241288033"
+  placeholder: false
+  type: journal
+  year: 2025
+  month: 2
+  selected: false
+  authors:
+    - "Yusheng Zhou"
+    - "Teresa Gisinger"
+    - "Simon D. Lindner"
+    - "Valeria Raparelli"
+    - "Colleen M. Norris"
+    - "Alexandra Kautzky-Willer"
+    - "Louise Pilote"
+  title:
+    en: "Sex, gender, and stroke recovery: Functional limitations and inpatient care needs in Canadian and European survivors"
+  venue:
+    en: "International Journal of Stroke"
+  doi: "10.1177/17474930241288033"
+- id: "10.1016/j.cjca.2024.02.016"
+  placeholder: false
+  type: journal
+  year: 2024
+  month: 6
+  selected: false
+  authors:
+    - "Yusheng Zhou"
+    - "Claire Grall-Johnson"
+    - "Jonathan Houle"
+    - "Louise Pilote"
+  title:
+    en: "Are Socioeconomic Factors Associated With Atrial Fibrillation Sex-Dependent? A Narrative Review"
+  venue:
+    en: "Canadian Journal of Cardiology"
+  doi: "10.1016/j.cjca.2024.02.016"
+- id: "10.1186/s12942-021-00278-w"
+  placeholder: false
+  type: journal
+  year: 2021
+  month: 5
+  selected: false
+  authors:
+    - "Yusheng Zhou"
+    - "Thomas von Lengerke"
+    - "Maren Dreier"
+  title:
+    en: "Comparing different data sources by examining the associations between surrounding greenspace and children's weight status"
+  venue:
+    en: "International Journal of Health Geographics"
+  doi: "10.1186/s12942-021-00278-w"
+- id: "10.3390/ijerph17082694"
+  placeholder: false
+  type: journal
+  year: 2020
+  month: 4
+  selected: false
+  authors:
+    - "Yusheng Zhou"
+    - "Christoph Buck"
+    - "Werner Maier"
+    - "Thomas von Lengerke"
+    - "Ulla Walter"
+    - "Maren Dreier"
+  title:
+    en: "Built environment and childhood weight status: A multi-level study using population-based data in the city of Hannover, Germany"
+  venue:
+    en: "International Journal of Environmental Research and Public Health"
+  doi: "10.3390/ijerph17082694"
+- id: "10.1515/pubhef-2019-0081"
+  placeholder: false
+  type: journal
+  year: 2019
+  month: 12
+  selected: false
+  authors:
+    - "Yusheng Zhou"
+    - "Ulla Walter"
+    - "Maren Dreier"
+  title:
+    en: "Migrationshintergrund und Prävalenz von Übergewicht und Adipositas bei Vorschulkindern"
+  venue:
+    en: "Public Health Forum"
+  doi: "10.1515/pubhef-2019-0081"
+- id: "10.1007/s00431-018-3118-x"
+  placeholder: false
+  type: journal
+  year: 2018
+  month: 5
+  selected: false
+  authors:
+    - "Yusheng Zhou"
+    - "Thomas von Lengerke"
+    - "Ulla Walter"
+    - "Maren Dreier"
+  title:
+    en: "Migration background and childhood overweight in the Hannover Region in 2010–2014: a population-based secondary data analysis of school entry examinations"
+  venue:
+    en: "European Journal of Pediatrics"
+  doi: "10.1007/s00431-018-3118-x"

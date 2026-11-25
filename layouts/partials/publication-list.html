@@ -1,0 +1,42 @@
+{{ $page := .page }}
+{{ $selectedOnly := .selectedOnly }}
+{{ $yearTag := or .yearTag "h2" }}
+{{ $titleTag := or .titleTag "h3" }}
+{{ $s := newScratch }}
+{{ $s.Set "rows" slice }}
+{{ $s.Set "i" 0 }}
+{{ range hugo.Data.publications }}
+  {{ $month := int (default 0 .month) }}
+  {{ $tie := sub 9999 (int ($s.Get "i")) }}
+  {{ $key := printf "%04d%02d-%04d" (int .year) $month $tie }}
+  {{ $s.Set "rows" ($s.Get "rows" | append (dict "key" $key "pub" .)) }}
+  {{ $s.Set "i" (add ($s.Get "i") 1) }}
+{{ end }}
+{{ $rows := sort ($s.Get "rows") "key" "desc" }}
+{{ $s.Set "filtered" slice }}
+{{ range $rows }}
+  {{ if or (not $selectedOnly) .pub.selected }}
+    {{ $s.Set "filtered" ($s.Get "filtered" | append .) }}
+  {{ end }}
+{{ end }}
+{{ $filtered := $s.Get "filtered" }}
+{{ if $filtered }}
+<div class="pub-list">
+{{ $s.Set "prev" -1 }}
+{{ range $filtered }}
+  {{ $pub := .pub }}
+  {{ $year := int $pub.year }}
+  {{ $prev := $s.Get "prev" }}
+  {{ if ne $year $prev }}
+    {{ if ne (int $prev) -1 }}
+</section>
+    {{ end }}
+<section class="year-group">
+{{ printf "<%s class=\"year\">%d</%s>" $yearTag $year $yearTag | safeHTML }}
+  {{ end }}
+  {{ partial "publication.html" (dict "page" $page "pub" $pub "titleTag" $titleTag) }}
+  {{ $s.Set "prev" $year }}
+{{ end }}
+</section>
+</div>
+{{ end }}

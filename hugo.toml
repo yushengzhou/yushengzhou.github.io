@@ -1,0 +1,38 @@
+baseURL = 'https://yushengzhou.github.io/'
+title = 'Yusheng Zhou'
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = false
+enableRobotsTXT = true
+disableKinds = ['taxonomy', 'term', 'RSS']
+
+# Optional CV path served from static/, for example "/cv/cv-en.pdf".
+# Leave this blank to show no CV link. A per-language cv value, including a
+# blank string, replaces this one for that language. The site does not fall
+# back from one language's file to another.
+[params]
+  cv = ''
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = false
+
+[languages]
+  [languages.en]
+    label = 'English'
+    locale = 'en-US'
+    weight = 1
+    [languages.en.params]
+      cv = ''
+
+  [languages.zh]
+    label = '中文'
+    locale = 'zh-Hans-CN'
+    weight = 2
+    hasCJKLanguage = true
+    [languages.zh.params]
+      cv = ''
