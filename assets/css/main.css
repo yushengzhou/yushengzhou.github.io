@@ -386,6 +386,11 @@ h4 {
   }
 }
 
+.credentials {
+  font-weight: 400;
+  color: var(--muted);
+}
+
 /* Flag strip on the full timeline (layouts/partials/stays.html). */
 .stays h2 {
   margin: 1.5rem 0 0.5rem;

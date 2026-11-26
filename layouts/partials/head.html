@@ -1,6 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{- if eq .Kind "404" -}}{{ i18n "not_found" }} · {{ site.Title }}{{- else if .IsHome -}}{{ site.Title }}{{- else -}}{{ .Title }} · {{ site.Title }}{{- end -}}</title>
+<title>{{- if eq .Kind "404" -}}{{ i18n "not_found" }} · {{ site.Title }}{{- else if .IsHome -}}{{ site.Title }}{{ with hugo.Data.profile.credentials }}, {{ . }}{{ end }}{{- else -}}{{ .Title }} · {{ site.Title }}{{- end -}}</title>
 {{- $desc := .Description -}}
 {{- if not $desc }}{{ $desc = i18n "not_found_body" }}{{ end }}
 <meta name="description" content="{{ $desc }}">
