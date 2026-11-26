@@ -437,18 +437,17 @@ def ac1_timeline_pages():
             fail(f"{rel} timeline order {got} != {want}")
         if 'id="experience-heading"' in text or "id=experience-heading" in text:
             fail(f"{rel} still has a standalone experience block")
-    home, _ = load("index.html")
-    if "data-timeline=preview" not in home and 'data-timeline="preview"' not in home:
-        fail("homepage is missing the timeline preview")
-    if "id=experience-heading" in home or 'id="experience-heading"' in home:
-        fail("homepage still has a standalone experience block")
-    if "id=education-heading" in home or 'id="education-heading"' in home:
-        fail("homepage still has a standalone education block")
-    preview = _timeline_items(home)
-    if not preview or any(item["type"] not in ("education", "position") for item in preview):
-        fail("homepage timeline preview must be education and positions only")
-    if "Full timeline" not in home:
-        fail("homepage timeline preview has no full-timeline link")
+    for rel, label in (("index.html", "Full timeline"), ("zh/index.html", "完整时间线")):
+        home, _ = load(rel)
+        if "data-timeline=" in home:
+            fail(f"{rel} still has a timeline; the slim homepage links to it instead")
+        for heading in ("experience-heading", "education-heading", "grants-heading"):
+            if f"id={heading}" in home or f'id="{heading}"' in home:
+                fail(f"{rel} still has the {heading} block")
+        if label not in home:
+            fail(f"{rel} has no full-timeline link")
+    if re.search(r"^\s*amount:", (ROOT / "data/grants.yaml").read_text(encoding="utf-8"), re.M):
+        fail("grants.yaml has an amount; grant amounts are not published")
     css = (ROOT / "assets/css/main.css").read_text(encoding="utf-8")
     if "[data-theme=\"dark\"]" not in css or "var(--text)" not in css or "var(--line)" not in css:
         fail("timeline styling must keep the existing light and dark variables")
@@ -499,7 +498,7 @@ def ac3_timeline_filters():
 
 def ac4_timeline_semantics():
     """AC4: ordered list, machine dates, keyboard details, reduced motion."""
-    for rel in ("timeline/index.html", "zh/timeline/index.html", "index.html"):
+    for rel in ("timeline/index.html", "zh/timeline/index.html"):
         text, _ = load(rel)
         if "<ol" not in text.lower() or "timeline" not in text.lower():
             fail(f"{rel} timeline is not an ordered list")

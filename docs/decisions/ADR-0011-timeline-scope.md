@@ -1,7 +1,7 @@
 # ADR-0011: Full timeline and homepage preview
 
 - Date: 2026-11-25
-- Status: accepted
+- Status: accepted; homepage preview superseded by [ADR-0014](ADR-0014-slim-homepage.md)
 
 ## Context
 

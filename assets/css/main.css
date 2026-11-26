@@ -198,6 +198,7 @@ main {
   height: auto;
   border-radius: 0.25rem;
   background: var(--line);
+  image-rendering: pixelated;
 }
 
 h1,
