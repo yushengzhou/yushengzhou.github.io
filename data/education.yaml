@@ -15,8 +15,8 @@
 - id: uq-msc
   placeholder: false
   degree:
-    en: "M.Sc. in Public Health"
-    zh: "公共卫生理学硕士"
+    en: "Master of Public Health (MPH)"
+    zh: "公共卫生硕士 (MPH)"
   org:
     en: "University of Queensland"
     zh: "University of Queensland"
