@@ -19,3 +19,4 @@ Accepted architecture decision records:
 - [ADR-0015](decisions/ADR-0015-no-grant-amounts.md) — No grant amounts
 - [ADR-0016](decisions/ADR-0016-pixel-avatar.md) — Pixel-art avatar as the portrait
 - [ADR-0017](decisions/ADR-0017-flag-strip.md) — Flag strip on the full timeline
+- [ADR-0018](decisions/ADR-0018-home-taglines.md) — Typed taglines on the home page

@@ -476,3 +476,48 @@ h4 {
 .stays[hidden] {
   display: none;
 }
+
+/* Home-page taglines typed under the name (layouts/home.html). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.taglines {
+  margin: 0 0 0.35rem;
+  min-height: 1.6em;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.taglines .caret {
+  display: none;
+}
+
+.taglines.is-typing .caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: currentColor;
+  animation: caret-blink 1s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* The longest tagline wraps on phones; keep room for two lines so the text
+   below does not jump while typing. */
+@media (max-width: 30rem) {
+  .taglines:lang(en) {
+    min-height: 3.2em;
+  }
+}

@@ -14,3 +14,13 @@ role:
 affiliation:
   en: "Department of Public Health, Aarhus University, Aarhus, Denmark"
   zh: "Department of Public Health, Aarhus University, 奥胡斯, 丹麦"
+# Typed in turn under the name on the home page (same lines as the GitHub
+# profile intro). Fields, not job titles. Without JavaScript, or with reduced
+# motion, the first line is shown still.
+taglines:
+  - en: "Environmental Epidemiologist"
+    zh: "环境流行病学研究者"
+  - en: "Climate, Environment & Cardiovascular Health"
+    zh: "气候、环境与心血管健康"
+  - en: "R · Python · Data Science"
+    zh: "R · Python · 数据科学"
