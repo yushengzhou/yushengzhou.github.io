@@ -21,7 +21,6 @@
 <div class="prose">
   {{ .Content }}
 </div>
-{{ partial "timeline.html" (dict "page" . "preview" true) }}
-{{ partial "grants.html" . }}
 {{ partial "selected.html" . }}
+<p class="home-more"><a class="more" href="{{ "timeline/" | relLangURL }}">{{ i18n "full_timeline" }}</a></p>
 {{ end }}

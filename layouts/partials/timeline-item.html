@@ -52,7 +52,7 @@
     </p>
     {{ end }}
     {{ if $s.Get "grant" }}
-    <p>{{ partial "loc.html" (dict "page" $page "value" $rec.role) }}{{ with $rec.amount }} · {{ . }}{{ end }}</p>
+    <p>{{ partial "loc.html" (dict "page" $page "value" $rec.role) }}</p>
     {{ end }}
   </details>
   {{ end }}
