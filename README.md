@@ -41,7 +41,7 @@ This writes `public/`. `baseURL` in `hugo.toml` is `https://yushengzhou.github.i
 
 ### Editing content
 
-The address on the home page is the `email` field in `data/profile.yaml`. The ORCID iD is the `orcid` field in that same file. Do not invent a second address in the Markdown.
+The address on the home page is the `email` field in `data/profile.yaml`. The ORCID iD is the `orcid` field in that same file. `credentials` (`MPH, PhD`) follows the name in the home-page heading and the home-page `<title>`, in both languages. Do not invent a second address in the Markdown.
 
 `content/_index.en.md` and `content/_index.zh.md` are the About text and the research-interest list. `title` and `description` in the front matter are the page title metadata and the meta description.
 

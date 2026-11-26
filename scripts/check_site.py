@@ -472,6 +472,13 @@ def ac2_timeline_mobile():
         fail("homepage is missing the name or email")
     if home.find("<h1") > home.find("mailto:"):
         fail("homepage email appears before the name")
+    cred = re.search(r'^credentials:\s*"([^"]*)"', (ROOT / "data/profile.yaml").read_text(encoding="utf-8"), re.M)
+    if cred and cred.group(1):
+        for rel in ("index.html", "zh/index.html"):
+            text, _ = load(rel)
+            h1 = re.search(r"<h1[^>]*>([\s\S]*?)</h1>", text)
+            if not h1 or cred.group(1) not in re.sub(r"<[^>]+>", "", h1.group(1)).replace("\u00a0", " "):
+                fail(f"{rel} h1 is missing the credentials {cred.group(1)!r}")
     if "data-timeline=preview" in home or 'data-timeline="preview"' in home:
         if home.find("mailto:") > home.find("data-timeline"):
             fail("homepage timeline is above the name and email")

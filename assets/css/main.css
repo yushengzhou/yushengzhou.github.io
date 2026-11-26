@@ -385,3 +385,8 @@ h4 {
     font-size: 2.25rem;
   }
 }
+
+.credentials {
+  font-weight: 400;
+  color: var(--muted);
+}
