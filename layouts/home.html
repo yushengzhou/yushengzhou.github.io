@@ -11,6 +11,15 @@
     </div>
     <div>
       <h1>{{ $p.name }}{{ with $p.credentials }}<span class="credentials">, {{ replace . ", " ", " }}</span>{{ end }}</h1>
+      {{ with $p.taglines }}
+      {{ $page := $ }}
+      {{ $lines := slice }}
+      {{ range . }}{{ $lines = $lines | append (partial "loc.html" (dict "page" $page "value" .)) }}{{ end }}
+      <p class="taglines" data-taglines="{{ jsonify $lines }}">
+        <span class="sr-only">{{ delimit $lines "; " }}</span>
+        <span class="typed" aria-hidden="true">{{ index $lines 0 }}</span><span class="caret" aria-hidden="true"></span>
+      </p>
+      {{ end }}
       <p class="role">{{ partial "loc.html" (dict "page" . "value" $p.role) }}</p>
       <p class="affil">{{ partial "loc.html" (dict "page" . "value" $p.affiliation) }}</p>
       <p class="contact"><span class="label">{{ i18n "email" }}</span> <a class="email" href="mailto:{{ $p.email }}">{{ $p.email }}</a></p>
@@ -23,4 +32,36 @@
 </div>
 {{ partial "selected.html" . }}
 <p class="home-more"><a class="more" href="{{ "timeline/" | relLangURL }}">{{ i18n "full_timeline" }}</a></p>
+{{ with $p.taglines }}
+<script>
+(function () {
+  var box = document.querySelector(".taglines");
+  if (!box) return;
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var lines;
+  try { lines = JSON.parse(box.getAttribute("data-taglines")); } catch (e) { return; }
+  if (!lines || lines.length < 2) return;
+  var out = box.querySelector(".typed");
+  box.classList.add("is-typing");
+  var i = 0, n = Array.from(lines[0]).length, typing = false;
+  function step() {
+    var chars = Array.from(lines[i]);
+    if (typing) {
+      n += 1;
+      out.textContent = chars.slice(0, n).join("");
+      if (n < chars.length) return setTimeout(step, 55);
+      typing = false;
+      return setTimeout(step, 2600);
+    }
+    n -= 1;
+    out.textContent = chars.slice(0, Math.max(n, 0)).join("");
+    if (n > 0) return setTimeout(step, 25);
+    i = (i + 1) % lines.length;
+    typing = true;
+    setTimeout(step, 350);
+  }
+  setTimeout(step, 2600);
+})();
+</script>
+{{ end }}
 {{ end }}

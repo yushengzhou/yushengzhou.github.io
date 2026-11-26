@@ -2,6 +2,7 @@
 """Checks for the built site in ./public and a few source constraints."""
 
 import base64
+import html
 import re
 import sys
 from html.parser import HTMLParser
@@ -479,6 +480,26 @@ def stays_strip():
             fail(f"{rel} has the flag strip; it belongs on the full timeline only")
 
 
+def home_taglines():
+    """Taglines: every line is in the page for screen readers; the first shows without JS."""
+    src = (ROOT / "data/profile.yaml").read_text(encoding="utf-8")
+    block = src.split("taglines:", 1)[1] if "taglines:" in src else ""
+    for rel, lang in (("index.html", "en"), ("zh/index.html", "zh")):
+        want = re.findall(rf'^\s+-?\s*{lang}:\s*"([^"]*)"', block, re.M)
+        if not want:
+            fail("profile.yaml has no taglines")
+        text, _ = load(rel)
+        plain = html.unescape(text)
+        sr = re.search(r'<span class="?sr-only"?>([^<]*)</span>', plain)
+        if not sr or sr.group(1) != "; ".join(want):
+            fail(f"{rel} screen-reader taglines do not match profile.yaml")
+        typed = re.search(r'<span class="?typed"?[^>]*>([^<]*)</span>', plain)
+        if not typed or typed.group(1) != want[0]:
+            fail(f"{rel} does not show the first tagline without JavaScript")
+        if "prefers-reduced-motion: reduce" not in text:
+            fail(f"{rel} tagline script ignores reduced motion")
+
+
 def ac2_timeline_mobile():
     """AC2: single column, 44px controls, homepage identity stays first."""
     css = (ROOT / "assets/css/main.css").read_text(encoding="utf-8")
@@ -697,6 +718,7 @@ def main():
     ac1_timeline_pages()
     ac2_timeline_mobile()
     stays_strip()
+    home_taglines()
     ac3_timeline_filters()
     ac4_timeline_semantics()
     ac5_timeline_exclusions()
