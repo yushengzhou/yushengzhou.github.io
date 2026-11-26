@@ -385,3 +385,89 @@ h4 {
     font-size: 2.25rem;
   }
 }
+
+/* Flag strip on the full timeline (layouts/partials/stays.html). */
+.stays h2 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.stays-scroll {
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.stays-track {
+  position: relative;
+  min-width: 38rem;
+  height: 5.75rem;
+  margin: 0 2.5rem 0 1rem;
+  border-bottom: 1px solid var(--text);
+}
+
+.stays-years,
+.stays-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.stays-years li {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.stays-years li::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 1.15rem;
+  height: 0.3rem;
+  border-left: 1px solid var(--line);
+}
+
+.stays-list li {
+  position: absolute;
+  top: 1.9rem;
+  bottom: 0;
+}
+
+.stays-list img {
+  display: block;
+  margin-left: -1px;
+  height: 18px;
+  width: auto;
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+/* Alternate flags between two lanes so short stays never overlap. */
+.stays-list li:nth-child(even) img {
+  margin-top: 1.6rem;
+}
+
+.stays-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--link);
+}
+
+.stays-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.stays[hidden] {
+  display: none;
+}

@@ -18,3 +18,4 @@ Accepted architecture decision records:
 - [ADR-0014](decisions/ADR-0014-slim-homepage.md) — Slim homepage
 - [ADR-0015](decisions/ADR-0015-no-grant-amounts.md) — No grant amounts
 - [ADR-0016](decisions/ADR-0016-pixel-avatar.md) — Pixel-art avatar as the portrait
+- [ADR-0017](decisions/ADR-0017-flag-strip.md) — Flag strip on the full timeline

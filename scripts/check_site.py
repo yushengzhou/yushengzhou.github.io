@@ -453,6 +453,32 @@ def ac1_timeline_pages():
         fail("timeline styling must keep the existing light and dark variables")
 
 
+def stays_strip():
+    """Flag strip: one flag per stay, only on the full timeline, ids trace to timeline rows."""
+    stays_src = (ROOT / "data/stays.yaml").read_text(encoding="utf-8")
+    stay_ids = re.findall(r"^- id:\s*(\S+)", stays_src, re.M)
+    flags = re.findall(r"^  flag:\s*(\S+)", stays_src, re.M)
+    row_ids = {row["id"] for row in _parse_timeline_rows()}
+    for group in re.findall(r"^  ids:\s*\[([^\]]*)\]", stays_src, re.M):
+        for ref in [x.strip() for x in group.split(",") if x.strip()]:
+            if ref not in row_ids:
+                fail(f"stays.yaml points at unknown timeline id {ref}")
+    for flag in flags:
+        if not (ROOT / "static/img/flags" / f"{flag}.svg").is_file():
+            fail(f"flag static/img/flags/{flag}.svg is missing")
+    for rel in ("timeline/index.html", "zh/timeline/index.html"):
+        text, _ = load(rel)
+        got = re.findall(r"data-stay=\"?([a-z0-9-]+)", text)
+        if got != stay_ids:
+            fail(f"{rel} flag strip {got} != {stay_ids}")
+        if re.search(r"<section\b[^>]*data-stays[^>]*hidden", text):
+            fail(f"{rel} hides the flag strip without JS")
+    for rel in ("index.html", "zh/index.html", "publications/index.html"):
+        text, _ = load(rel)
+        if "data-stay" in text:
+            fail(f"{rel} has the flag strip; it belongs on the full timeline only")
+
+
 def ac2_timeline_mobile():
     """AC2: single column, 44px controls, homepage identity stays first."""
     css = (ROOT / "assets/css/main.css").read_text(encoding="utf-8")
@@ -663,6 +689,7 @@ def main():
     check_private()
     ac1_timeline_pages()
     ac2_timeline_mobile()
+    stays_strip()
     ac3_timeline_filters()
     ac4_timeline_semantics()
     ac5_timeline_exclusions()

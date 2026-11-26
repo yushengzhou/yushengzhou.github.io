@@ -70,6 +70,7 @@
     <button type="button" data-tl-filter="publication" aria-pressed="false">{{ i18n "filter_publication" }}</button>
     <button type="button" data-tl-filter="milestone" aria-pressed="false">{{ i18n "filter_milestone" }}</button>
   </div>
+  {{ partial "stays.html" $page }}
 {{ end }}
 <ol class="timeline">
   {{ range $items }}
@@ -91,6 +92,11 @@
       var on = buttons[i].getAttribute("data-tl-filter") === type;
       buttons[i].setAttribute("aria-pressed", on ? "true" : "false");
     }
+    var stays = root.querySelector("[data-stays]");
+    if (stays) {
+      if (type === "all") stays.removeAttribute("hidden");
+      else stays.setAttribute("hidden", "");
+    }
     var items = root.querySelectorAll("[data-tl-type]");
     for (i = 0; i < items.length; i++) {
       var show = type === "all" || items[i].getAttribute("data-tl-type") === type;
@@ -98,6 +104,8 @@
       else items[i].setAttribute("hidden", "");
     }
   }
+  var strip = root.querySelector(".stays-scroll");
+  if (strip) strip.scrollLeft = strip.scrollWidth;
   root.addEventListener("click", function (event) {
     var node = event.target;
     if (!node || !node.closest) return;
