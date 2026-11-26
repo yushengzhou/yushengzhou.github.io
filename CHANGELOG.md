@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed (2026-11-26)
 
+- The home-page heading and title show the credentials after the name: Yusheng Zhou, MPH, PhD (`credentials` in `data/profile.yaml`).
+- The University of Queensland degree reads Master of Public Health (MPH) / 公共卫生硕士 (MPH), matching the credentials.
 - The homepage is slimmer: profile, About, research interests, selected publications, and links to all publications and the full timeline. The timeline preview and the grants block are gone from the homepage (ADR-0014).
 - Grant amounts are no longer published and are removed from `data/grants.yaml` (ADR-0015).
 - The portrait is the owner's pixel-art avatar, `static/img/portrait.jpg`, so no placeholder is left (ADR-0016).

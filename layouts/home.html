@@ -10,7 +10,7 @@
       {{ if $p.portrait_placeholder }}<span class="badge">{{ i18n "placeholder" }}</span>{{ end }}
     </div>
     <div>
-      <h1>{{ $p.name }}</h1>
+      <h1>{{ $p.name }}{{ with $p.credentials }}<span class="credentials">, {{ replace . ", " ", " }}</span>{{ end }}</h1>
       <p class="role">{{ partial "loc.html" (dict "page" . "value" $p.role) }}</p>
       <p class="affil">{{ partial "loc.html" (dict "page" . "value" $p.affiliation) }}</p>
       <p class="contact"><span class="label">{{ i18n "email" }}</span> <a class="email" href="mailto:{{ $p.email }}">{{ $p.email }}</a></p>
