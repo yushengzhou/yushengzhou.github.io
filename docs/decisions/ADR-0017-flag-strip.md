@@ -11,7 +11,7 @@ The full timeline is a vertical list. The owner wanted the "All" view to also sh
 
 `/timeline/` and `/zh/timeline/` show a horizontal year axis above the list, with one flag per stay and a bar for its dates. `data/stays.yaml` lists the stays. Each stay points at ids in `data/timeline.yaml`; its dates come from those rows and its city label from the first record's `place`. The strip is shown with the All filter and hidden by the other filters.
 
-Canadian stays use the province flag (Quebec for Montréal, Ontario for Toronto); other stays use the country flag. Flags are the public-domain SVGs from the `region-flags` npm package (1.1.0), copied to `static/img/flags/`.
+Every stay uses its country flag, so Montréal and Toronto both show the flag of Canada (owner's correction on 2026-11-26; the first version used the Quebec and Ontario flags). Flags are the public-domain SVGs from the `region-flags` npm package (1.1.0), copied to `static/img/flags/`.
 
 ## Rationale
 

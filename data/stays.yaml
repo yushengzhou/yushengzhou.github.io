@@ -25,18 +25,18 @@
     zh: "德国"
   ids: [mhh-phd, mhh-grad-2021]
 - id: montreal
-  flag: CA-QC
-  ratio: 1.5
-  region:
-    en: "Quebec"
-    zh: "魁北克"
-  ids: [muhc-2023]
-- id: toronto
-  flag: CA-ON
+  flag: CA
   ratio: 2
   region:
-    en: "Ontario"
-    zh: "安大略"
+    en: "Canada"
+    zh: "加拿大"
+  ids: [muhc-2023]
+- id: toronto
+  flag: CA
+  ratio: 2
+  region:
+    en: "Canada"
+    zh: "加拿大"
   ids: [uhn-kite-2025]
 - id: aarhus
   flag: DK

@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added (2026-11-26)
 
-- Flag strip on the full timeline: a horizontal year axis with one flag per place studied or worked, from `data/stays.yaml`. Shown with the All filter (ADR-0017).
+- Flag strip on the full timeline: a horizontal year axis with one flag per place studied or worked, from `data/stays.yaml`. Shown with the All filter (ADR-0017). Every stay uses its country flag, so Montréal and Toronto both show the flag of Canada.
 
 ### Changed (2026-11-26)
 
