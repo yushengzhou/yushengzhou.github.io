@@ -1,0 +1,75 @@
+{{- /* Horizontal year axis with one flag per place, built from data/stays.yaml.
+     Start and end are fractional years: "YYYY-MM" starts at the start of that
+     month and ends at the end of it; "YYYY" starts on 1 Jan and ends on 31 Dec;
+     an open end is the end of the build month. */ -}}
+{{ $page := . }}
+{{ $nowY := add (float now.Year) (div (float (int now.Month)) 12.0) }}
+{{ $s := newScratch }}
+{{ $s.Set "rows" (slice) }}
+{{ $s.Set "min" 9999.0 }}
+{{ range hugo.Data.stays }}
+  {{ $stay := . }}
+  {{ $acc := newScratch }}
+  {{ $acc.Set "start" 9999.0 }}
+  {{ $acc.Set "end" 0.0 }}
+  {{ $acc.Set "rec" "" }}
+  {{ $acc.Set "open" false }}
+  {{ range $stay.ids }}
+    {{ $id := . }}
+    {{ range hugo.Data.timeline }}
+      {{ if eq .id $id }}
+        {{ $b := split .start "-" }}
+        {{ $st := float (index $b 0) }}
+        {{ if eq (len $b) 2 }}{{ $st = add $st (div (float (sub (int (strings.TrimLeft "0" (index $b 1))) 1)) 12.0) }}{{ end }}
+        {{ $en := $nowY }}
+        {{ if not .end }}{{ $acc.Set "open" true }}{{ end }}
+        {{ with .end }}
+          {{ $e := split . "-" }}
+          {{ $en = add (float (index $e 0)) 1.0 }}
+          {{ if eq (len $e) 2 }}{{ $en = add (float (index $e 0)) (div (float (int (strings.TrimLeft "0" (index $e 1)))) 12.0) }}{{ end }}
+        {{ end }}
+        {{ if lt $st ($acc.Get "start") }}{{ $acc.Set "start" $st }}{{ end }}
+        {{ if gt $en ($acc.Get "end") }}{{ $acc.Set "end" $en }}{{ end }}
+        {{ $from := .from }}
+        {{ if not ($acc.Get "rec") }}
+          {{ range (index hugo.Data $from) }}{{ if eq .id $id }}{{ $acc.Set "rec" . }}{{ end }}{{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ if lt ($acc.Get "start") ($s.Get "min") }}{{ $s.Set "min" ($acc.Get "start") }}{{ end }}
+  {{ $s.Set "rows" ($s.Get "rows" | append (dict "stay" $stay "start" ($acc.Get "start") "end" ($acc.Get "end") "rec" ($acc.Get "rec") "open" ($acc.Get "open"))) }}
+{{ end }}
+{{ $min := math.Floor ($s.Get "min") }}
+{{ $max := add (float now.Year) 1.0 }}
+{{ $span := sub $max $min }}
+<section class="stays" data-stays aria-labelledby="stays-heading">
+  <h2 id="stays-heading">{{ i18n "stays_heading" }}</h2>
+  <div class="stays-scroll" tabindex="0" role="region" aria-labelledby="stays-heading">
+    <div class="stays-track">
+      <ol class="stays-years" aria-hidden="true">
+        {{ range seq (int $min) (int (sub $max 1.0)) }}
+        <li style="{{ printf "left:%.3f%%" (mul (div (sub (float .) $min) $span) 100.0) | safeCSS }}">{{ . }}</li>
+        {{ end }}
+      </ol>
+      <ol class="stays-list">
+        {{ range $s.Get "rows" }}
+        {{ $left := mul (div (sub .start $min) $span) 100.0 }}
+        {{ $width := mul (div (sub .end .start) $span) 100.0 }}
+        {{ $place := partial "loc.html" (dict "page" $page "value" .rec.place) }}
+        {{ $region := partial "loc.html" (dict "page" $page "value" .stay.region) }}
+        {{ $sy := int (math.Floor .start) }}
+        {{ $ey := int (math.Floor (sub .end 0.01)) }}
+        {{ $years := printf "%d–%d" $sy $ey }}
+        {{ if eq $sy $ey }}{{ $years = printf "%d" $sy }}{{ end }}
+        {{ if .open }}{{ $years = printf "%d–%s" $sy (i18n "stays_present") }}{{ end }}
+        <li data-stay="{{ .stay.id }}" style="{{ printf "left:%.3f%%;width:%.3f%%" $left $width | safeCSS }}" title="{{ $place }} · {{ $years }}">
+          <img src="{{ printf "img/flags/%s.svg" .stay.flag | relURL }}" alt="{{ i18n "stays_flag" (dict "Region" $region) }}" width="{{ math.Round (mul 18.0 .stay.ratio) }}" height="18" loading="lazy">
+          <span class="stays-bar" aria-hidden="true"></span>
+          <span class="stays-label">{{ $place }}, {{ $years }}</span>
+        </li>
+        {{ end }}
+      </ol>
+    </div>
+  </div>
+</section>

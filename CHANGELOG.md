@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (2026-11-26)
+
+- Flag strip on the full timeline: a horizontal year axis with one flag per place studied or worked, from `data/stays.yaml`. Shown with the All filter (ADR-0017).
+
 ### Changed (2026-11-26)
 
 - The home-page heading and title show the credentials after the name: Yusheng Zhou, MPH, PhD (`credentials` in `data/profile.yaml`).

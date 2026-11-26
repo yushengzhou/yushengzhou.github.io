@@ -1,0 +1,47 @@
+# Where each period of study or work was spent, for the flag strip on the
+# full timeline. Each row points at ids in data/timeline.yaml; the dates come
+# from those rows, and the city label from the first record's `place`.
+# `flag` is a file in static/img/flags/ (public-domain SVGs from the
+# region-flags package). `ratio` is the flag's width / height.
+- id: hangzhou
+  flag: CN
+  ratio: 1.5
+  region:
+    en: "China"
+    zh: "中国"
+  ids: [zcmu-bs]
+- id: brisbane
+  flag: AU
+  ratio: 2
+  region:
+    en: "Australia"
+    zh: "澳大利亚"
+  ids: [uq-msc]
+- id: hannover
+  flag: DE
+  ratio: 1.667
+  region:
+    en: "Germany"
+    zh: "德国"
+  ids: [mhh-phd, mhh-grad-2021]
+- id: montreal
+  flag: CA-QC
+  ratio: 1.5
+  region:
+    en: "Quebec"
+    zh: "魁北克"
+  ids: [muhc-2023]
+- id: toronto
+  flag: CA-ON
+  ratio: 2
+  region:
+    en: "Ontario"
+    zh: "安大略"
+  ids: [uhn-kite-2025]
+- id: aarhus
+  flag: DK
+  ratio: 1.321
+  region:
+    en: "Denmark"
+    zh: "丹麦"
+  ids: [au-dph-2026]
